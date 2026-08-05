@@ -7,7 +7,7 @@ export default function LoginScreen({ navigation }) {
     const [password, setPassword] = useState("");
 
     const handleLogin = () => {
-        console.log("Login ditekan:", username, password);
+        navigation.replace("Home");
     };
 
     return (
@@ -46,7 +46,7 @@ export default function LoginScreen({ navigation }) {
 
                 <TouchableOpacity
                     style={styles.kujangIdButton}
-                    onPress={() => Alert.alert("Debug", "nanti ini pindahke halaman Kujang ID")}
+                    onPress={() => navigation.navigate("KujangIdLogin")}
                 >
                     <Text style={styles.kujangIdButtonText}>Login with KUJANG ID</Text>
                 </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { colors, spacing, typography } from "../theme";
 
 const SSO_PROVIDERS = [
@@ -19,7 +19,7 @@ export default function KujangIdLoginScreen() {
                 <Text style={typography.h2}>Sign in to</Text>
                 <Text style={[typography.h1, { color: colors.kujangIdBlue }]}>DEMPLON</Text>
 
-                {SSO_PROVIDERS.map((provider, index) => (
+                {SSO_PROVIDERS.map((label) => (
                     <TouchableOpacity key={label} style={styles.ssoButton}>
                         <Text style={typography.body}>{label}</Text>
                     </TouchableOpacity>
@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 16,
         padding: spacing.lg,
-        ssoButton: {
-            borderWidth: 1,
-            borderColor: "#E5E7EB",
-            borderRadius: 8,
-            padding: spacing.md,
-            marginBottom: spacing.sm,
-        },
+    },
+    ssoButton: {
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
+        borderRadius: 8,
+        padding: spacing.md,
+        marginBottom: spacing.sm,
     },
 });
