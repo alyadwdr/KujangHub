@@ -4,7 +4,7 @@ import { colors, spacing, typography } from '../theme';
 import dummyApps from '../data/dummyApps';
 import dummyRequests from '../data/dummyRequests';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
             <Text style={[typography.h1, { color: colors.primary }]}>Kujang Hub</Text>
@@ -38,7 +38,10 @@ export default function HomeScreen() {
                             {item.sourceApp} | {item.date}
                         </Text>
                     </View>
-                    <TouchableOpacity style={styles.prosesButton}>
+                    <TouchableOpacity 
+                        style={styles.prosesButton}
+                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                    >
                         <Text style={{ color: colors.primary }}>Proses</Text>
                     </TouchableOpacity>
                 </View>
