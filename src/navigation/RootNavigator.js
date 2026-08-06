@@ -6,6 +6,7 @@ import LoginScreen from "../screens/LoginScreen";
 import KujangIdLoginScreen from "../screens/KujangIdLoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import DetailRequestScreen from "../screens/DetailRequestScreen";
+import PendingPerAppScreen from "../screens/PendingPerAppScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function RootNavigator() {
                 <Stack.Screen name="KujangIdLogin" component={KujangIdLoginScreen} />
                 <Stack.Screen name="Home" component={HomeScreen} />
                 <Stack.Screen name="DetailRequest" component={DetailRequestScreen} />
+                <Stack.Screen name="PendingPerApp" component={PendingPerAppScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

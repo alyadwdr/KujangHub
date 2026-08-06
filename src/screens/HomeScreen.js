@@ -11,7 +11,12 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.greeting}>Halo, Tono Sartono</Text>
 
             <View style={styles.card}>
-                <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
+                <View style={styles.cardHeaderRow}>
+                    <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("PendingPerApp")}>
+                        <Text style={styles.lihatSemua}>Lihat Semua &gt;</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.dotsRow}>
                     {dummyApps.map((app) => (
                         <View key={app.id} style={styles.dotItem}>
@@ -66,6 +71,16 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: spacing.md,
         marginBottom: spacing.md,
+    },
+    cardHeaderRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    lihatSemua: {
+        color: colors.primary,
+        fontWeight: "700",
+        fontSize: 12,
     },
     dotsRow: {
         flexDirection: 'row',
