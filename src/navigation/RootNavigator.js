@@ -7,6 +7,8 @@ import KujangIdLoginScreen from "../screens/KujangIdLoginScreen";
 import HomeScreen from "../screens/HomeScreen";
 import DetailRequestScreen from "../screens/DetailRequestScreen";
 import PendingPerAppScreen from "../screens/PendingPerAppScreen";
+import InboxScreen from "../screens/InboxScreen";
+import MainTabs from "./MainTabs";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +19,7 @@ export default function RootNavigator() {
                 <Stack.Screen name="Splash" component={SplashScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="KujangIdLogin" component={KujangIdLoginScreen} />
-                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="MainTabs" component={MainTabs} />
                 <Stack.Screen name="DetailRequest" component={DetailRequestScreen} />
                 <Stack.Screen name="PendingPerApp" component={PendingPerAppScreen} />
             </Stack.Navigator>

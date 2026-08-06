@@ -59,7 +59,7 @@ export default function KujangIdLoginScreen({ navigation }) {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.signInButton} onPress={() => navigation.replace("Home")}>
+                <TouchableOpacity style={styles.signInButton} onPress={() => navigation.replace("MainTabs")}>
                     <Text style={styles.signInButtonText}>Sign In</Text>
                 </TouchableOpacity>
 
