@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import dummyRequests from "../data/dummyRequests";
 
@@ -12,7 +12,10 @@ export default function InboxScreen({ navigation }) {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 renderItem={({ item }) => (
-                    <View style={styles.card}>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                    >
                         <View style={styles.cardTopRow}>
                             <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22` }]}>
                                 <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
@@ -20,7 +23,7 @@ export default function InboxScreen({ navigation }) {
                             <Text style={styles.date}>{item.date}</Text>
                         </View>
                         <Text style={[typography.body, styles.itemTitle]}></Text>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>
