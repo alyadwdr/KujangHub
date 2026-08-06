@@ -4,7 +4,7 @@ import { colors, typography } from "../theme";
 
 export default function ProfileScreen() {
     return (
-        <View style={StyleSheet.container}>
+        <View style={styles.container}>
             <Text style={typography.h2}>Profile Screen</Text>
         </View>
     );

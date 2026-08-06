@@ -15,7 +15,7 @@ export default function MainTabs() {
             screenOptions={{
                 headerShown: false,
                 tabBarActiveTintColor: colors.primary,
-                tabBarInactiveTintColor: colors,textSecondary,
+                tabBarInactiveTintColor: colors.textSecondary,
         }}
         >
             <Tab.Screen name="Home" component={HomeScreen}/>
