@@ -4,10 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "../screens/SplashScreen";
 import LoginScreen from "../screens/LoginScreen";
 import KujangIdLoginScreen from "../screens/KujangIdLoginScreen";
-import HomeScreen from "../screens/HomeScreen";
 import DetailRequestScreen from "../screens/DetailRequestScreen";
 import PendingPerAppScreen from "../screens/PendingPerAppScreen";
-import InboxScreen from "../screens/InboxScreen";
 import MainTabs from "./MainTabs";
 
 const Stack = createNativeStackNavigator();
