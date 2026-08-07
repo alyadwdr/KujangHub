@@ -20,5 +20,5 @@ export function RequestsProvider({ children }) {
 }
 
 export function useRequests() {
-    return useContext(RequestContext);
+    return useContext(RequestsContext);
 }

@@ -1,14 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { colors, spacing, typography } from "../theme";
-import dummyRequests from "../data/dummyRequests";
+import { useRequests } from "../context/RequestsContext";
 
 export default function InboxScreen({ navigation }) {
+    const { requests } = useRequests();
+    const pendingRequests = requests.filter((item) => !item.status || item.status === "pending");
+
     return (
         <View style={styles.container}>
             <Text style={[typography.h1, styles.title]}>Inbox</Text>
             <FlatList
-                data={dummyRequests}
+                data={pendingRequests}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 renderItem={({ item }) => (

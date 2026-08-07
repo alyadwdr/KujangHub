@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { colors, typography, spacing } from "../theme";
-import dummyRequests from "../data/dummyRequests";
+import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
 
 export default function DetailRequestScreen({ route, navigation }) {
     const { requestId } = route.params;
-    const request = dummyRequests.find((item) => item.id === requestId);
+    const { requests, updateRequestStatus } = useRequests();
+    const request = requests.find((item) => item.id === requestId);
 
-    const [modalType, setModalType] = useState(null); // null | "approve" | "reject"
+    const [modalType, setModalType] = useState(null);
 
     if (!request) {
         return (
@@ -69,7 +70,8 @@ export default function DetailRequestScreen({ route, navigation }) {
                 type={modalType}
                 onCancel={() => setModalType(null)}
                 onConfirm={(note) => {
-                    console.log("Konfirmasi:", modalType, "catatan:", note);
+                    const newStatus = modalType === "approve" ? "approved" : "rejected";
+                    updateRequestStatus(request.id, newStatus); 
                     setModalType(null);
                     navigation.goBack();
                 }}
