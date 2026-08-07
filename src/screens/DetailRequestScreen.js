@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { colors, typography, spacing } from "../theme";
 import dummyRequests from "../data/dummyRequests";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function DetailRequestScreen({ route, navigation }) {
     const { requestId } = route.params;
     const request = dummyRequests.find((item) => item.id === requestId);
+
+    const [modalType, setModalType] = useState(null); // null | "approve" | "reject"
 
     if (!request) {
         return (
@@ -47,10 +50,10 @@ export default function DetailRequestScreen({ route, navigation }) {
 
             {request.actionType === "approve_reject" ? (
                 <View style={styles.actionRow}>
-                    <TouchableOpacity style={styles.rejectButton}>
+                    <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
                         <Text style={{ color: colors.danger, fontWeight: "700" }}>Tolak</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.approveButton}>
+                    <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
                         <Text style={{ color: colors.white, fontWeight: "700" }}>Setujui</Text>
                     </TouchableOpacity>
                 </View>
@@ -61,6 +64,16 @@ export default function DetailRequestScreen({ route, navigation }) {
                     </Text>
                 </TouchableOpacity>
             )}
+            <ConfirmModal
+                visible={modalType !== null}
+                type={modalType}
+                onCancel={() => setModalType(null)}
+                onConfirm={(note) => {
+                    console.log("Konfirmasi:", modalType, "catatan:", note);
+                    setModalType(null);
+                    navigation.goBack();
+                }}
+            />
         </ScrollView>
     );
 }
