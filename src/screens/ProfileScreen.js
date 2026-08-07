@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from "re
 import { colors, spacing, typography } from "../theme";
 import dummyUser from "../data/dummyUser"
 import ConfirmModal from "../components/ConfirmModal";
-import { divide } from "react-native/types_generated/Libraries/Animated/AnimatedExports";
 
 export default function ProfileScreen({ navigation }) {
     const [notifEnabled, setNotifEnabled] = useState(false);

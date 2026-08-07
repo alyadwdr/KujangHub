@@ -25,7 +25,7 @@ export default function InboxScreen({ navigation }) {
                             </View>
                             <Text style={styles.date}>{item.date}</Text>
                         </View>
-                        <Text style={[typography.body, styles.itemTitle]}></Text>
+                        <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
                     </TouchableOpacity>
                 )}
             />
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
-        jpaddingTop: spacing.lg,
+        paddingTop: spacing.lg,
     },
     title: {
         color: colors.primary,

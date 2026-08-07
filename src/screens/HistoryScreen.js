@@ -20,7 +20,7 @@ export default function HistoryScreen() {
                 renderItem={({ item }) => (
                     <View style={styles.card}>
                         <View style={styles.cardTopRow}>
-                            <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22 `}]}>
+                            <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22`}]}>
                                 <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
                             </View>
                             <Text style={styles.date}>{item.date}</Text>

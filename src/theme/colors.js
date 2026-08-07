@@ -7,6 +7,7 @@ export const colors = {
     textSecondary: '#737385',
     white: '#FFFFFF',
     kujangIdBlue: '#2563EB',
+    danger: "#DC2626",
 };
 
 export default colors;

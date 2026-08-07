@@ -14,7 +14,7 @@ export const dummyRequests = [
         detail: {
             "Jumlah Unit": "1 Unit",
             "No Transakasi": "BIOS/20260722/0031",
-            "Jneis Peminjaman": "Barang Inventaris",
+            "Jenis Peminjaman": "Barang Inventaris",
             "Tanggal Peminjaman": "22 Juli 2026"
         },
         note: "Digunakan untuk tutorial menggunakan APAR di Safety Induction",

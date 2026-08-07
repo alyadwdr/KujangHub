@@ -8,21 +8,21 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
     const config = {
         approve: {
             title: "Setujui request ini",
-            descrription: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
+            description: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
             confirmLabel: "Setujui",
             confirmColor: colors.primary,
             showNoteInput: true,
         },
         reject: {
             title: "Tolak request ini",
-            descrription: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
+            description: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
             confirmLabel: "Tolak",
             confirmColor: colors.danger,
             showNoteInput: true,
         },
         logout: {
             title: "Keluar dari akun?",
-            descrription: "Anda perlu login lagi lewat Kujang ID untuk masuk ke aplikasi",
+            description: "Anda perlu login lagi lewat Kujang ID untuk masuk ke aplikasi",
             confirmLabel: "Ya, Keluar",
             confirmColor: colors.danger,
             showNoteInput: false,
@@ -41,9 +41,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
             <View style={styles.backdrop}>
                 <View style={styles.card}>
                     <Text style={typography.h2}>{current.title}</Text>
-                    <Text style={styles.description}>{current.description}
-                        Status akan diperbarui dan pemohon akan mendapat notifikasi
-                    </Text>
+                    <Text style={styles.description}>{current.description}</Text>
 
                     {current.showNoteInput && (
                         <TextInput
@@ -57,7 +55,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
 
                     <View style={styles.buttonRow}>
                         <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-                            <Text style={{ fontWeight: "700"}}>Batal</Text>
+                            <Text style={{ fontWeight: "700" }}>Batal</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.confirmButton, { backgroundColor: current.confirmColor }]}
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: spacing.lg,
     },
-    descrription: {
+    description: {
         color: colors.textSecondary,
         marginTop: spacing.xs,
         marginBottom: spacing.md,
