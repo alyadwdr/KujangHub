@@ -8,6 +8,7 @@ export const colors = {
     white: '#FFFFFF',
     kujangIdBlue: '#2563EB',
     danger: "#DC2626",
+    warning: "#F2A93B"
 };
 
 export default colors;
