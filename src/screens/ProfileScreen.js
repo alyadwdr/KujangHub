@@ -3,12 +3,14 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from "re
 import { colors, spacing, typography } from "../theme";
 import dummyUser from "../data/dummyUser"
 import ConfirmModal from "../components/ConfirmModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen({ navigation }) {
     const [notifEnabled, setNotifEnabled] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem("isLoggedIn");
         setShowLogoutModal(false);
         navigation.reset({
             index:0,

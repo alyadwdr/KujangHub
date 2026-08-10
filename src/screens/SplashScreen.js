@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated, Easing } from "react-native";
 import { colors, spacing, typography } from "../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SplashScreen({ navigation }) {
     const translateY = useRef(new Animated.Value(-150)).current;
@@ -19,8 +20,13 @@ export default function SplashScreen({ navigation }) {
                 duration: 500,
                 useNativeDriver: true,
             })
-        ]).start(() => {
-            navigation.replace("Login");
+        ]).start(async () => {
+            const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+            if (isLoggedIn === "ture") {
+                navigation.replace("MainTabs");
+            } else {
+                navigation.replace("Login");
+            }
         });
     }, [translateY, opacity]);
 

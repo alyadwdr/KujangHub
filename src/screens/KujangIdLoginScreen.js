@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SSO_PROVIDERS = [
     { label: "Sign in with ESS/MSS/SAP", icon: require("../assets/images/sap-icon.png") },
@@ -59,7 +60,10 @@ export default function KujangIdLoginScreen({ navigation }) {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.signInButton} onPress={() => navigation.replace("MainTabs")}>
+                <TouchableOpacity style={styles.signInButton} onPress={async () => {
+                    await AsyncStorage.setItem("isLoggedIn", "true");
+                    navigation.replace("MainTabs")
+                }}>
                     <Text style={styles.signInButtonText}>Sign In</Text>
                 </TouchableOpacity>
 
