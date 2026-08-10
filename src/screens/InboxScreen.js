@@ -81,7 +81,7 @@ export default function InboxScreen({ navigation }) {
                             <View style={styles.actionRow}>
                                 <TouchableOpacity
                                     style={styles.rejectButton}
-                                    onPress={() => openModal(item.id), "reject"}
+                                    onPress={() => openModal(item.id, "reject")}
                                 >
                                     <Text style={styles.rejectText}>✕ Tolak</Text>
                                 </TouchableOpacity>

@@ -1,31 +1,94 @@
-import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 
+const TABS = [
+    { key: "all", label: "Semua" },
+    { key: "approved", label: "Disetujui" },
+    { key: "rejected", label: "Ditolak" },
+    { key: "expired", label: "Terlewat" },
+]
+
 export default function HistoryScreen() {
     const { requests } = useRequests();
+    const [activeTab, setActiveTab] = useState("all");
+    const [search, setSearch] = useState("");
+
     const historyRequests = requests.filter(
         (item) => item.status === "approved" || item.status === "rejected"
     );
 
+    const counts = {
+        all: historyRequests.length,
+        approved: historyRequests.filter((item) => item.status === "approved").length,
+        rejected: historyRequests.filter((item) => item.status === "rejected").length,
+        expired: 0,
+    };
+
+    const filteredRequests = historyRequests
+    .filter((item) => (activeTab === "all" ? true : item.status === activeTab))
+    .filter((item) => item.title.toLowerCase().includes(search.toLowerCase()));
+
     return (
         <View style={styles.container}>
-            <Text style={[typography.h1, styles.title]}>History</Text>
+            <View style={styles.header}>
+                <Text style={[typography.h1, styles.title]}>History</Text>
+                <Image
+                    source={require("../assets/images/bell-icon.png")}
+                    style={styles.bellIcon}
+                    resizeMode="contain"
+                />
+            </View>
+
+            <TextInput
+                style={styles.search}
+                placeholder="Search..."
+                value={search}
+                onChangeText={setSearch}
+            />
+
+            <View style={styles.tabRow}>
+                {TABS.map((tab) => {
+                    const isActive = activeTab === tab.key;
+                    return (
+                        <TouchableOpacity
+                            key={tab.key}
+                            style={[styles.tabChip, isActive && styles.tabChipActive]}
+                            onPress={() => setActiveTab(tab.key)}
+                        >
+                            <Text style ={[styles.tabText, isActive && styles.tabTextActive]}>
+                                {tab.label} {counts[tab.key]}
+                            </Text>
+                        </TouchableOpacity>
+                    );
+                })}
+            </View>
+            
             <FlatList
-                data={historyRequests}
+                data={filteredRequests}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
                 renderItem={({ item }) => (
                     <View style={styles.card}>
                         <View style={styles.cardTopRow}>
-                            <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22`}]}>
-                                <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
+                            <View style={styles.badge}>
+                                <Text style={styles.badgeText}>{item.sourceApp}</Text>
                             </View>
                             <Text style={styles.date}>{item.date}</Text>
                         </View>
+
                         <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
+                        <Text style={styles.itemNote}>{item.note}</Text>
+
+                        <View style={styles.requesterRow}>
+                            <View style={styles.avatar} />
+                            <Text style={styles.requesterText}>
+                                {item.requester.name} - Dept. {item.requester.dept}
+                            </Text>
+                        </View>
+
                         <Text
                             style={[
                                 styles.statusText,
@@ -45,15 +108,56 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
+    },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: spacing.lg,
         paddingTop: spacing.lg,
     },
     title: {
         color: colors.primary,
+    },
+    bellIcon: {
+        width: 28,
+        height: 28,
+    },
+    search: {
+        backgroundColor:colors.surface,
+        marginHorizontal: spacing.lg,
+        marginTop: spacing.lg,
+        borderRadius: 8,
+        padding: spacing.md,
+    },
+    tabRow: {
+        flexDirection: "row",
+        gap: spacing.xs,
         paddingHorizontal: spacing.lg,
-        marginBottom: spacing.md,
+        marginTop: spacing.md,
+        flexWrap: "wrap",
+    },
+    tabChip: {
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
+        borderRadius: 999,
+        paddingHorizontal: spacing.sm,
+        paddingVertical: 6,
+        backgroundColor: colors.surface,
+    },
+    tabChipActive: {
+        backgroundColor: colors.primary,
+        borderColor: colors.primary,
+    },
+    tabText: {
+        fontSize: 12,
+        color: colors.textPrimary,
+    },
+    tabTextActive: {
+        color: colors.white,
     },
     list: {
-        paddingHorizontal: spacing.lg,
+        padding: spacing.lg,
         gap: spacing.md,
     },
     empty: {
@@ -72,12 +176,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     badge: {
+        backgroundColor: "#E5E7EB",
         paddingHorizontal: spacing.sm,
         paddingVertical: 4,
         borderRadius: 6,
     },
     badgeText: {
         fontSize: 12,
+        fontWeight: "700",
         color: colors.textSecondary
     },
     date: {
@@ -85,7 +191,29 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
     },
     itemTitle: {
-        marginTop: spacing.xs
+        marginTop: spacing.sm,
+        fontWeight: "700",
+    },
+    itemNote: {
+        fontSize: 12, 
+        color: colors.textSecondary,
+        marginTop: 2,
+    },
+    requesterRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: spacing.sm,
+    },
+    avatar: {
+        width: 20,
+        height: 20,
+        borderRadius: 999,
+        backgroundColor: colors.textSecondary,
+    },
+    requesterText: {
+        fontSize: 12,
+        fontWeight: "700",
+        marginLeft: spacing.xs,
     },
     statusText: {
         marginTop: spacing.sm,
