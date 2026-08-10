@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../theme";
+import { Image } from "react-native";
 
 import HomeScreen from "../screens/HomeScreen";
 import InboxScreen from "../screens/InboxScreen";
@@ -9,19 +10,33 @@ import ProfileScreen from "../screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
+const ICONS = {
+    Home: require("../assets/images/home-icon.png"),
+    Inbox: require("../assets/images/inbox-icon.png"),
+    History: require("../assets/images/history-icon.png"),
+    Profile: require("../assets/images/profile-icon.png"),
+}
+
 export default function MainTabs() {
     return (
         <Tab.Navigator
-            screenOptions={{
+            screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.textSecondary,
-        }}
+                tabBarIcon: ({ color, size }) => (
+                    <Image
+                        source={ICONS[route.name]}
+                        style={{ width: size, height: size, tintColor: color }}
+                        resizeMode="contain"
+                    />
+                ),
+            })}
         >
-            <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Inbox" component={InboxScreen}/>
-            <Tab.Screen name="History" component={HistoryScreen}/>
-            <Tab.Screen name="Profile" component={ProfileScreen}/>
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Inbox" component={InboxScreen} />
+            <Tab.Screen name="History" component={HistoryScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
     );
 }
