@@ -22,7 +22,7 @@ export default function SplashScreen({ navigation }) {
             })
         ]).start(async () => {
             const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-            if (isLoggedIn === "ture") {
+            if (isLoggedIn === "true") {
                 navigation.replace("MainTabs");
             } else {
                 navigation.replace("Login");
