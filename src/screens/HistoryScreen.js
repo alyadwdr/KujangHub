@@ -11,13 +11,9 @@ const TABS = [
 ]
 
 export default function HistoryScreen() {
-    const { requests } = useRequests();
+    const { historyRequests } = useRequests();
     const [activeTab, setActiveTab] = useState("all");
     const [search, setSearch] = useState("");
-
-    const historyRequests = requests.filter(
-        (item) => item.status === "approved" || item.status === "rejected"
-    );
 
     const counts = {
         all: historyRequests.length,

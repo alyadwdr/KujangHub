@@ -7,13 +7,13 @@ import ConfirmModal from "../components/ConfirmModal";
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 
 export default function InboxScreen({ navigation }) {
-    const { requests, updateRequestStatus } = useRequests();
+    const { pendingRequests, updateRequestStatus } = useRequests();
     const [search, setSearch] = useState("");
     const [modalRequest, setModalRequest] = useState(null);
 
-    const pendingRequests = requests
-        .filter((item) => !item.status || item.status === "pending")
-        .filter((item) => item.title.toLowerCase().includes(search.toLowerCase()));
+    const filteredRequests = pendingRequests.filter((item) =>
+        item.title.toLowerCase().includes(search.toLowerCase())
+    );
 
     const openModal = (id, type) => setModalRequest({ id, type });
     const closeModal = () => setModalRequest(null);
@@ -51,7 +51,7 @@ export default function InboxScreen({ navigation }) {
             </View>
 
             <FlatList
-                data={pendingRequests}
+                data={filteredRequests}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 renderItem={({ item }) => (
