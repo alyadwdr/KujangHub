@@ -12,8 +12,10 @@ export function RequestsProvider({ children }) {
         );
     };
 
+    const pendingRequests = requests.filter((item) => item.status || item.status === "pending");
+
     return (
-        <RequestsContext.Provider value={{ requests, updateRequestStatus }}>
+        <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests }}>
             {children}
         </RequestsContext.Provider>
     );
