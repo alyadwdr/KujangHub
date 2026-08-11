@@ -83,8 +83,12 @@ export default function HomeScreen({ navigation }) {
                     key={item.id}
                     style={[styles.requestRow, index > 0 && styles.requestRowDivider]}
                 >
-                    <View style={[styles.avatar, { backgroundColor: item.badgeColor }]}>
-                        <Text style={styles.avatarText}>{item.sourceApp[0]}</Text>
+                    <View style={styles.avatar}>
+                        <Image
+                            source={dummyApps.find((app) => app.matchKey === item.sourceApp)?.logo}
+                            style={styles.avatarLogo}
+                            resizeMode="contain"
+                        />
                     </View>
                     <View style={{ flex: 1, marginLeft: spacing.sm }}>
                         <Text style={typography.body} numberOfLines={1}>
@@ -185,9 +189,12 @@ const styles = StyleSheet.create({
     avatar: {
         width: 32,
         height: 32,
-        borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    avatarLogo: {
+        width: 32,
+        height: 32,
     },
     avatarText: {
         color: colors.white,
