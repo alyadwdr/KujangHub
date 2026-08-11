@@ -79,7 +79,11 @@ export default function HistoryScreen() {
                         <Text style={styles.itemNote}>{item.note}</Text>
 
                         <View style={styles.requesterRow}>
-                            <View style={styles.avatar} />
+                            <Image
+                                source={require("../assets/images/person-icon.png")}
+                                style={styles.avatar}
+                                resizeMode="cover"
+                            />
                             <Text style={styles.requesterText}>
                                 {item.requester.name} - Dept. {item.requester.dept}
                             </Text>

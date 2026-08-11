@@ -37,7 +37,11 @@ export default function DetailRequestScreen({ route, navigation }) {
             <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: 100 }}>
 
                 <View style={styles.requesterCard}>
-                    <View style={styles.avatar} />
+                    <Image
+                        source={require("../assets/images/person-icon.png")}
+                        style={styles.avatar}
+                        resizeMode="cover"
+                    />
                     <View style={{ flex: 1, marginLeft: spacing.sm }}>
                         <Text style={typography.body}>{request.requester.name}</Text>
                         <Text style={styles.small}>{request.requester.nip}</Text>
