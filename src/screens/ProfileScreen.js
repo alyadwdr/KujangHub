@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import dummyUser from "../data/dummyUser"
 import ConfirmModal from "../components/ConfirmModal";
@@ -20,11 +20,24 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
-            <Text style={[typography.h1, { color: colors.primary }]}>Profile</Text>
+            <View style={styles.header}>
+                <Text style={[typography.h1, { color: colors.primary }]}>Profile</Text>
+                <Image
+                    source={require("../assets/images/bell-icon.png")}
+                    style={styles.bellIcon}
+                    resizeMode="contain"
+                />
+            </View>
 
-            <View style={styles.profileCard}>
-                <View style={styles.avatar} />
-                <Text style={[typography.h2, { marginTop: spacing.sm }]}>{dummyUser.name}</Text>
+            <View style={styles.profileCardWrapper}>
+                <View style={styles.profileCard}>
+                    <Text style={typography.h2}>{dummyUser.name}</Text>
+                </View>
+                <Image
+                    source={require("../assets/images/person-icon.png")}
+                    style={styles.avatar}
+                    resizeMode="contain"
+                />
             </View>
 
             <Text style={styles.sectionLabel}>Informasi Profil</Text>
@@ -45,6 +58,21 @@ export default function ProfileScreen({ navigation }) {
                 <View style={styles.row}>
                     <Text style={typography.body}>Notifikasi</Text>
                     <Switch value={notifEnabled} onValueChange={setNotifEnabled} />
+                </View>
+                <View style={styles.divider} />
+                <TouchableOpacity style={styles.row}>
+                    <Text style={typography.body}>Bantuan & Panduan</Text>
+                    <Text style={styles.chevron}>›</Text>
+                </TouchableOpacity>
+                <View style={styles.divider} />
+                <TouchableOpacity style={styles.row}>
+                    <Text style={typography.body}>Kebijakan Privasi & Ketentuan Layanan</Text>
+                    <Text style={styles.chevron}>›</Text>
+                </TouchableOpacity>
+                <View style={styles.divider} />
+                <View style={styles.row}>
+                    <Text style={typography.body}>Tentang Aplikasi</Text>
+                    <Text style={styles.rowLabel}>v1.0.0</Text>
                 </View>
             </View>
 
@@ -67,18 +95,33 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.background,
     },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    bellIcon: {
+        width: 28,
+        height: 28
+    },
+    profileCardWrapper: {
+        marginTop: 50,
+    },
     profileCard:  {
         backgroundColor: colors.surface,
         borderRadius: 16,
-        padding: spacing.lg,
+        paddingTop: 72,
+        paddingBottom: spacing.lg,
+        paddingHorizontal: spacing.lg,
         alignItems: "center",
-        marginTop: spacing.md,
     },
     avatar: {
-        width: 72,
-        height: 72,
-        borderRadius: 36,
-        backgroundColor: colors.primary,
+        position: "absolute",
+        top: -36,
+        alignSelf: "center",
+        width: 92,
+        height: 92,
+        borderRadius: 999,
     },
     sectionLabel: {
         color: colors.textSecondary,
@@ -99,12 +142,17 @@ const styles = StyleSheet.create({
     rowLabel: {
         color: colors.textSecondary,
     },
+    chevron: {
+        color: colors.textSecondary,
+    },
     divider: {
         height: 1, 
         backgroundColor: "#E5E7EB",
     },
     logoutButton: {
         backgroundColor: "#FBE7E7",
+        borderWidth: 1,
+        borderColor: colors.danger,
         borderRadius: 8,
         paddingVertical: spacing.md,
         alignItems: "center",
