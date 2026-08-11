@@ -54,7 +54,11 @@ export default function DetailRequestScreen({ route, navigation }) {
                         </Text>
                     </View>
                     <View style={styles.webviewContainer}>
-                        <WebView source={{ uri: request.webviewUrl }} style={styles.webview} />
+                        <WebView
+                            source={{ uri: request.webviewUrl }} 
+                            style={styles.webview} 
+                            nestedScrollEnabled={true}
+                        />
                     </View>
                 </View>
 
