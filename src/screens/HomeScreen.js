@@ -7,7 +7,19 @@ import dummyUser from '../data/dummyUser';
 
 export default function HomeScreen({ navigation }) {
     const { pendingRequests } = useRequests();
-    const appsWithPending = dummyApps.filter((app) => app.pendingCount > 0);
+    
+    const appCountsMap = {};
+    pendingRequests.forEach((item) => {
+        if (!appCountsMap[item.sourceApp]) {
+            appCountsMap[item.sourceApp]= { name: item.sourceApp, color: item.badgeColor, count: 0 };
+        }
+        appCountsMap[item.sourceApp].count += 1;
+    });
+    const appCounts = Object.values(appCountsMap).sort((a, b) => b.count - a.count);
+
+    const topApps = appCounts.slice(0, 3);
+    const restApps = appCounts.slice(3);
+    const restCount = restApps.reduce((sum, app) => sum + app.count, 0);
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
@@ -24,26 +36,43 @@ export default function HomeScreen({ navigation }) {
             </Text>
             <View style={styles.divider} />
 
-            <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("PendingPerApp")}>
+            <View style={styles.card}>
                 <View style={styles.cardHeaderRow}>
                     <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
-                    <Text style={styles.lihatSemua}>Lihat Semua &gt;</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("PendingPerApp")}>
+                        <Text style={styles.lihatSemua}>Lihat Semua &gt;</Text>
+                    </TouchableOpacity>
                 </View>
                 
-                <View style={styles.progressBar}>
-                    <View style={styles.progressFill} />
+                <View style={styles.segmentBar}>
+                    {topApps.map((app) => (
+                        <View
+                            key={app.name}
+                            style={[styles.segment, { flex: app.count, backgroundColor: app.color }]}
+                        />
+                    ))}
+                    {restCount > 0 && (
+                        <View style={[styles.segment, { flex: restCount, backgroundColor: colors.textSecondary }]} />
+                    )}
                 </View>
 
                 <View style={styles.dotsRow}>
-                    {appsWithPending.map((app) => (
-                        <View key={app.id} style={styles.dotItem}>
+                    {topApps.map((app) => (
+                        <View key={app.name} style={styles.dotItem}>
                             <View style={[styles.dot, { backgroundColor: app.color }]} />
                             <Text style={typography.small}>{app.name}</Text>
-                            <Text style={[typography.small, { fontWeight: "700" }]}> {app.pendingCount}</Text>
+                            <Text style={[typography.small, { fontWeight: "700" }]}> {app.count}</Text>
                         </View>
                     ))}
+                    {restCount > 0 && (
+                        <View style={styles.dotItem}>
+                            <View style={[styles.dot, { backgroundColor: colors.textSecondary }]} />
+                            <Text style={typography.small}>DLL</Text>
+                            <Text style={[typography.small, { fontWeight: "700" }]}> {restCount}</Text>
+                        </View>
+                    )}
             </View>
-        </TouchableOpacity>
+        </View>
 
         <View style={styles.card}>
             <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
@@ -118,17 +147,15 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         fontSize: 12,
     },
-    progressBar: {
+    segmentBar: {
+        flexDirection: "row",
         height: 4,
-        backgroundColor: "#E5E7EB",
         borderRadius: 2,
+        overflow: "hidden",
         marginTop: spacing.sm,
     },
-    progressFill: {
-        width: "30%",
+    segment: {
         height: 4,
-        backgroundColor: colors.primary,
-        borderRadius: 2,
     },
     dotsRow: {
         flexDirection: 'row',

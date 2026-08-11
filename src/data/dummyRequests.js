@@ -11,7 +11,7 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "approve_reject",
-        webviewUrl: "https://reactnative.dev",
+        webviewUrl: "https://pupuk-kujang.co.id/",
         detail: {
             "Jumlah Unit": "1 Unit",
             "No Transakasi": "BIOS/20260722/0031",
@@ -33,7 +33,7 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "redirect_only",
-        webviewUrl: "https://reactnative.dev",
+        webviewUrl: "https://pupuk-kujang.co.id/",
         detail: {
             "RCSA Kode": "RCSA-001-C0813730002-2024-001",
             "Periode": "2024",
@@ -55,7 +55,7 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "approve_reject",
-        webviewUrl: "https://reactnative.dev",
+        webviewUrl: "https://pupuk-kujang.co.id/",
         detail: {
             "No.Order": "ORD/20260721835/0004",
             "Keperluan": "Untuk rapat"
@@ -63,6 +63,19 @@ export const dummyRequests = [
         note: "-",
         attachments: [{ name: "Lampiran.pdf" }],
     },
+    {
+    id: "4",
+    sourceApp: "DTS",
+    badgeColor: "#2F6FE0",
+    title: "Approval Dokumen Kontrak Vendor",
+    date: "2 jam yang lalu",
+    requester: { name: "Tono Sartono", nip: "3082625", dept: "Teknologi Informasi PKC" },
+    actionType: "approve_reject",
+    webviewUrl: "https://pupuk-kujang.co.id/",
+    detail: { "No Dokumen": "DOC/2026/0089" },
+    note: "-",
+    attachments: [],
+},
 ];
 
 export default dummyRequests;

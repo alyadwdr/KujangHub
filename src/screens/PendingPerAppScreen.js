@@ -2,8 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import { colors, typography, spacing } from "../theme";
 import { dummyApps } from "../data/dummyApps";
+import { useRequests } from "../context/RequestsContext";
 
 export default function PendingPerAppScreen({ navigation }) {
+    const { pendingRequests } = useRequests();
+
+    const appsWithCount = dummyApps.map((app) => {
+        const count = pendingRequests.filter((item) => item.sourceApp === app.matchKey).length;
+        return {...app, pendingCount: count };
+    });
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -21,7 +29,7 @@ export default function PendingPerAppScreen({ navigation }) {
             <Text style={styles.subtitle}>Aplikasi yang terhubung ke Kujang Hub</Text>
 
             <FlatList
-                data={dummyApps}
+                data={appsWithCount}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 renderItem={({ item }) => (
