@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { colors, typography, spacing } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
+import { WebView } from "react-native-webview";
 
 export default function DetailRequestScreen({ route, navigation }) {
     const { requestId } = route.params;
@@ -20,51 +21,74 @@ export default function DetailRequestScreen({ route, navigation }) {
     }
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
-            <Text style={[typography.h2, { color: colors.primary, marginBottom: spacing.md }]}>
-                Detail Request
-            </Text>
-
-            <View style={styles.requesterCard}>
-                <View style={styles.avatar} />
-                <View style={{ flex: 1, marginLeft: spacing.sm }}>
-                    <Text style={typography.body}>{request.requester.name}</Text>
-                    <Text style={styles.small}>{request.requester.nip}</Text>
-                </View>
-                <View style={[styles.badge, { backgroundColor: `${request.badgeColor}22` }]}>
-                    <Text style={[styles.badgeText, { color: request.badgeColor }]}>{request.sourceApp}</Text>
-                </View>
-            </View>
-
-            <View style={styles.detailCard}>
-                <Text style={[typography.body, { fontWeight: "700", marginBottom: spacing.sm }]}>
-                    {request.title}
-                </Text>
-                {Object.entries(request.detail).map(([key, value]) => (
-                    <Text key={key} style={styles.detailRow}>
-                        <Text style={{ fontWeight: "700" }}>{key}: </Text>
-                        {value}
-                    </Text>
-                ))}
-                <Text style={styles.noteText}>Catatan: {request.note}</Text>
-            </View>
-
-            {request.actionType === "approve_reject" ? (
-                <View style={styles.actionRow}>
-                    <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
-                        <Text style={{ color: colors.danger, fontWeight: "700" }}>Tolak</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
-                        <Text style={{ color: colors.white, fontWeight: "700" }}>Setujui</Text>
-                    </TouchableOpacity>
-                </View>
-            ) : (
-                <TouchableOpacity style={styles.redirectButton}>
-                    <Text style={{ color: colors.kujangIdBlue, fontWeight: "700" }}>
-                        Proses di {request.sourceApp}
-                    </Text>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Text style={{ fontSize: 18 }}>‹</Text>
                 </TouchableOpacity>
-            )}
+                <Text style={[typography.h2, styles.headerTitle]}>Detail Request</Text>
+                <Image
+                    source={require("../assets/images/bell-icon.png")}
+                    style={styles.bellIcon}
+                    resizeMode="contain"
+                />
+            </View>
+
+            <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: 100 }}>
+
+                <View style={styles.requesterCard}>
+                    <View style={styles.avatar} />
+                    <View style={{ flex: 1, marginLeft: spacing.sm }}>
+                        <Text style={typography.body}>{request.requester.name}</Text>
+                        <Text style={styles.small}>{request.requester.nip}</Text>
+                    </View>
+                    <View style={[styles.badge, { backgroundColor: `${request.badgeColor}22` }]}>
+                        <Text style={[styles.badgeText, { color: request.badgeColor }]}>{request.sourceApp}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.webviewCard}>
+                    <View style={styles.urlBar}>
+                        <Text style={styles.urlText} numberOfLines={1}>
+                            🔒 {request.webviewUrl}
+                        </Text>
+                    </View>
+                    <View style={styles.webviewContainer}>
+                        <WebView source={{ uri: request.webviewUrl }} style={styles.webview} />
+                    </View>
+                </View>
+
+                {request.attachments?.length > 0 && (
+                    <View style={styles.attachmentCard}>
+                        <Text style={styles.attachmentTitle}>Lampiran</Text>
+                        {request.attachments.map((att) => (
+                            <View key={att.name} style={styles.attachmentRow}>
+                                <Text style={styles.attachmentText}>📎 {att.name}</Text>
+                            </View>
+                        ))}
+                    </View>
+                )}
+            </ScrollView>
+            
+            <View style={styles.footer}>
+                {request.actionType === "approve_reject" ? (
+                    <View style={styles.actionRow}>
+                        <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
+                            <Text style={{ color: colors.danger, fontWeight: "700" }}>Tolak</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
+                            <Text style={{ color: colors.white, fontWeight: "700" }}>Setujui</Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <TouchableOpacity style={styles.redirectButton}>
+                        <Text style={{ color: colors.kujangIdBlue, fontWeight: "700" }}>
+                            Proses di {request.sourceApp}
+                        </Text>
+                    </TouchableOpacity>
+                )}
+            </View>
+
             <ConfirmModal
                 visible={modalType !== null}
                 type={modalType}
@@ -76,7 +100,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                     navigation.goBack();
                 }}
             />
-        </ScrollView>
+        </View>
     );
 }
 
@@ -84,6 +108,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: spacing.lg,
+        paddingTop: spacing.lg,
+    },
+    backButton: {
+        width: 36,
+        height: 36,
+        borderRadius: 8,
+        backgroundColor: colors.surface,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    headerTitle: {
+        color: colors.primary,
+        flex: 1,
+        marginLeft: spacing.sm,
+    },
+    bellIcon: {
+        width: 28,
+        height: 28,
     },
     requesterCard: {
         flexDirection: "row",
@@ -112,19 +159,42 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: "700",
     },
-    detailCard: {
+    webviewCard: {
+        backgroundColor: colors.surface,
+        borderRadius: 12,
+        marginBottom: spacing.lg,
+        overflow: "hidden",
+    },
+    urlBar: {
+        padding: spacing.sm,
+        backgroundColor: "#F3F4F6",
+    },
+    urlText: {
+        fontSize: 12,
+        color: colors.textSecondary,
+    },
+    webviewContainer: {
+        height: 320,
+    },
+    webview: {
+        flex: 1,
+    },
+    attachmentCard: {
         backgroundColor: colors.surface,
         borderRadius: 12,
         padding: spacing.md,
-        marginBottom: spacing.lg,
     },
-    detailRow: {
-        marginTop:spacing.xs,
+    attachmentTitle: {
+        fontWeight: "700",
+        marginBottom: spacing.sm,
     },
-    noteText: {
-        marginTop:spacing.sm,
-        fontStyle: "italic",
-        color: colors.textSecondary,
+    attachmentRow: {
+        backgroundColor: colors.background,
+        borderRadius: 8,
+        padding: spacing.md,
+    },
+    attachmentText: {
+        fontWeight: "700",
     },
     actionRow: {
         flexDirection: "row",
@@ -152,5 +222,12 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingVertical: spacing.md,
         alignItems: "center",
+    },
+    footer: {
+        padding: spacing.lg,
+        marginTop: spacing.sm,
+        backgroundColor: colors.white,
+        borderTopWidth: 1,
+        borderColor: "#E5E7EB"
     },
 });

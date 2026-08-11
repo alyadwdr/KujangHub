@@ -11,6 +11,7 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "approve_reject",
+        webviewUrl: "https://reactnative.dev",
         detail: {
             "Jumlah Unit": "1 Unit",
             "No Transakasi": "BIOS/20260722/0031",
@@ -18,6 +19,7 @@ export const dummyRequests = [
             "Tanggal Peminjaman": "22 Juli 2026"
         },
         note: "Digunakan untuk tutorial menggunakan APAR di Safety Induction",
+        attachments: [{ name: "Lampiran.pdf" }],
     },
     {
         id: "2",
@@ -31,13 +33,15 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "redirect_only",
+        webviewUrl: "https://reactnative.dev",
         detail: {
             "RCSA Kode": "RCSA-001-C0813730002-2024-001",
             "Periode": "2024",
             "Unit Kerja": "Departemen Teknologi Informasi & Komunikasi",
             "Status": "Submit to Manager",
         },
-        note: "-"
+        note: "-",
+        attachments: [{ name: "Lampiran.pdf" }],
     },
     {
         id: "3",
@@ -51,11 +55,13 @@ export const dummyRequests = [
             dept: "Teknologi Informasi PKC",
         },
         actionType: "approve_reject",
+        webviewUrl: "https://reactnative.dev",
         detail: {
             "No.Order": "ORD/20260721835/0004",
             "Keperluan": "Untuk rapat"
         },
         note: "-",
+        attachments: [{ name: "Lampiran.pdf" }],
     },
 ];
 
