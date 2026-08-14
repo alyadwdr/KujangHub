@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     },
     badgeText: {
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     date: {
         fontSize: 12,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     },
     itemTitle: {
         marginTop: spacing.sm,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     itemNote: {
         fontSize: 12,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     },
     requesterText: {
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         marginLeft: spacing.xs,
     },
     actionRow: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     },
     rejectText: {
         color: colors.danger,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     approveButton: {
         flex: 1,
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     },
     approveText: {
         color: colors.white,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     redirectButton: {
         borderWidth: 1,
@@ -253,6 +253,6 @@ const styles = StyleSheet.create({
     },
     redirectText: {
         color: colors.kujangIdBlue,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
 });

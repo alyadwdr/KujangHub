@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
                 />
             </View>
             <Text style={styles.greeting}>
-                Halo, <Text style={{ fontWeight: "700" }}>{dummyUser.name}</Text>
+                Halo, <Text style={{ fontFamily: "Inter-Bold" }}>{dummyUser.name}</Text>
             </Text>
             <View style={styles.divider} />
 
@@ -61,14 +61,14 @@ export default function HomeScreen({ navigation }) {
                         <View key={app.name} style={styles.dotItem}>
                             <View style={[styles.dot, { backgroundColor: app.color }]} />
                             <Text style={typography.small}>{app.name}</Text>
-                            <Text style={[typography.small, { fontWeight: "700" }]}> {app.count}</Text>
+                            <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {app.count}</Text>
                         </View>
                     ))}
                     {restCount > 0 && (
                         <View style={styles.dotItem}>
                             <View style={[styles.dot, { backgroundColor: colors.textSecondary }]} />
                             <Text style={typography.small}>DLL</Text>
-                            <Text style={[typography.small, { fontWeight: "700" }]}> {restCount}</Text>
+                            <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {restCount}</Text>
                         </View>
                     )}
             </View>
@@ -102,7 +102,7 @@ export default function HomeScreen({ navigation }) {
                         style={styles.prosesButton}
                         onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
                     >
-                        <Text style={{ color: colors.primary, fontWeight: "700" }}>Proses</Text>
+                        <Text style={{ color: colors.primary, fontFamily: "Inter-Bold" }}>Proses</Text>
                     </TouchableOpacity>
                 </View>
             ))}
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     },
     lihatSemua: {
         color: colors.primary,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         fontSize: 12,
     },
     segmentBar: {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     avatarText: {
         color: colors.white,
-        fontWeight: '700',
+        fontFamily: "Inter-Bold",
     },
     prosesButton: {
         backgroundColor: `${colors.primary}22`,

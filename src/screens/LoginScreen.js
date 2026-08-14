@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         color: colors.white,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     orRow: {
         flexDirection: "row",
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     },
     kujangIdButtonText: {
         color: colors.white,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     privacy: {
         textAlign: "center",

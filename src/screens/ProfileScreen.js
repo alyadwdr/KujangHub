@@ -77,7 +77,7 @@ export default function ProfileScreen({ navigation }) {
             </View>
 
             <TouchableOpacity style={styles.logoutButton} onPress={() => setShowLogoutModal(true)}>
-                <Text style={{ color: colors.danger, fontWeight: "700" }}>Keluar</Text>
+                <Text style={{ color: colors.danger, fontFamily: "Inter-Bold" }}>Keluar</Text>
             </TouchableOpacity>
 
             <ConfirmModal

@@ -55,13 +55,13 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
 
                     <View style={styles.buttonRow}>
                         <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-                            <Text style={{ fontWeight: "700" }}>Batal</Text>
+                            <Text style={{ fontFamily: "Inter-Bold" }}>Batal</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.confirmButton, { backgroundColor: current.confirmColor }]}
                             onPress={handleConfirm}
                         >
-                            <Text style={{ color: colors.white, fontWeight: "700" }}>{current.confirmLabel}</Text>
+                            <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>{current.confirmLabel}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

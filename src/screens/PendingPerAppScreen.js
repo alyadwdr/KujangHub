@@ -136,6 +136,6 @@ const styles = StyleSheet.create({
     },
     pendingText: {
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
 });

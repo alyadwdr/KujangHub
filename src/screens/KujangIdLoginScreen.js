@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         color: colors.textSecondary,
     },
     inputLabel: {
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         marginBottom: spacing.xs,
     },
     input: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     },
     signInButtonText: {
         color: colors.white,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     terms: {
         textAlign: "center",

@@ -82,15 +82,15 @@ export default function DetailRequestScreen({ route, navigation }) {
                 {request.actionType === "approve_reject" ? (
                     <View style={styles.actionRow}>
                         <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
-                            <Text style={{ color: colors.danger, fontWeight: "700" }}>Tolak</Text>
+                            <Text style={{ color: colors.danger, fontFamily: "Inter-Bold" }}>Tolak</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
-                            <Text style={{ color: colors.white, fontWeight: "700" }}>Setujui</Text>
+                            <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Setujui</Text>
                         </TouchableOpacity>
                     </View>
                 ) : (
                     <TouchableOpacity style={styles.redirectButton}>
-                        <Text style={{ color: colors.kujangIdBlue, fontWeight: "700" }}>
+                        <Text style={{ color: colors.kujangIdBlue, fontFamily: "Inter-Bold" }}>
                             Proses di {request.sourceApp}
                         </Text>
                     </TouchableOpacity>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     },
     badgeText:{
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     webviewCard: {
         backgroundColor: colors.surface,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
         padding: spacing.md,
     },
     attachmentTitle: {
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         marginBottom: spacing.sm,
     },
     attachmentRow: {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         padding: spacing.md,
     },
     attachmentText: {
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     actionRow: {
         flexDirection: "row",

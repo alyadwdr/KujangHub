@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     },
     badgeText: {
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         color: colors.textSecondary
     },
     date: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     },
     itemTitle: {
         marginTop: spacing.sm,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
     },
     itemNote: {
         fontSize: 12, 
@@ -212,13 +212,13 @@ const styles = StyleSheet.create({
     },
     requesterText: {
         fontSize: 12,
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         marginLeft: spacing.xs,
     },
     statusText: {
         marginTop: spacing.sm,
         textAlign: "right",
-        fontWeight: "700",
+        fontFamily: "Inter-Bold",
         fontSize: 12,
     }
 });
