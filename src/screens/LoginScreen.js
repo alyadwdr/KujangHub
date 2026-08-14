@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -37,7 +37,7 @@ export default function LoginScreen({ navigation }) {
                 />
 
                 <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Login</Text>
+                    <Text style={styles.loginButtonText}>Log In</Text>
                 </TouchableOpacity>
 
                 <View style={styles.orRow}>
@@ -50,7 +50,7 @@ export default function LoginScreen({ navigation }) {
                     style={styles.kujangIdButton}
                     onPress={() => navigation.navigate("KujangIdLogin")}
                 >
-                    <Text style={styles.kujangIdButtonText}>Login with KUJANG ID</Text>
+                    <Text style={styles.kujangIdButtonText}>Log In with KUJANG ID</Text>
                 </TouchableOpacity>
 
                 <Text style={styles.privacy}>Privacy & Policy</Text>

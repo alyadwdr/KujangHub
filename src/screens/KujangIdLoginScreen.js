@@ -68,8 +68,8 @@ export default function KujangIdLoginScreen({ navigation }) {
                 </TouchableOpacity>
 
                 <Text style={styles.terms}>
-                    By continuing, you agree to our {" "}
-                    <Text style={styles.termsLink}>Terms of Service</Text> and {" "}
+                    By continuing, you agree to our{" "}
+                    <Text style={styles.termsLink}>Terms of Service</Text> and{" "}
                     <Text style={styles.termsLink}>Privacy Policy</Text>
                 </Text>
             </View>
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 12,
-        backgroundColor: colors.primary,
         marginBottom: spacing.md,
     },
     helperText: {
