@@ -38,7 +38,7 @@ export default function PendingPerAppScreen({ navigation }) {
                             <Image source={item.logo} style={styles.iconImage} resizeMode="contain" />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={typography.body}>{item.name}</Text>
+                            <Text style={[typography.body, { fontFamily: "Inter-Bold" }]}>{item.name}</Text>
                             <Text style={styles.itemSubtitle}>{item.subtitle}</Text>
                         </View>
                         <View

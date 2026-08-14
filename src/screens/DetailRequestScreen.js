@@ -43,7 +43,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                         resizeMode="cover"
                     />
                     <View style={{ flex: 1, marginLeft: spacing.sm }}>
-                        <Text style={typography.body}>{request.requester.name}</Text>
+                        <Text style={[typography.body, { fontFamily: "Inter-Bold" }]}>{request.requester.name}</Text>
                         <Text style={styles.small}>{request.requester.nip}</Text>
                     </View>
                     <View style={[styles.badge, { backgroundColor: `${request.badgeColor}22` }]}>
@@ -82,15 +82,15 @@ export default function DetailRequestScreen({ route, navigation }) {
                 {request.actionType === "approve_reject" ? (
                     <View style={styles.actionRow}>
                         <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
-                            <Text style={{ color: colors.danger, fontFamily: "Inter-Bold" }}>Tolak</Text>
+                            <Text style={{ color: colors.danger }}>Tolak</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
-                            <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Setujui</Text>
+                            <Text style={{ color: colors.white }}>Setujui</Text>
                         </TouchableOpacity>
                     </View>
                 ) : (
                     <TouchableOpacity style={styles.redirectButton}>
-                        <Text style={{ color: colors.kujangIdBlue, fontFamily: "Inter-Bold" }}>
+                        <Text style={{ color: colors.kujangIdBlue }}>
                             Proses di {request.sourceApp}
                         </Text>
                     </TouchableOpacity>

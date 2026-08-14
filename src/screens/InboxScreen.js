@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
     },
     rejectText: {
         color: colors.danger,
-        fontFamily: "Inter-Bold",
     },
     approveButton: {
         flex: 1,
@@ -240,7 +239,6 @@ const styles = StyleSheet.create({
     },
     approveText: {
         color: colors.white,
-        fontFamily: "Inter-Bold",
     },
     redirectButton: {
         borderWidth: 1,
@@ -253,6 +251,5 @@ const styles = StyleSheet.create({
     },
     redirectText: {
         color: colors.kujangIdBlue,
-        fontFamily: "Inter-Bold",
     },
 });

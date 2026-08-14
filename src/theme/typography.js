@@ -1,8 +1,8 @@
 export const typography = {
-    h1: { fontSize: 26, fontWeight: 'Inter-ExtraBold' },
-    h2: { fontSize: 20, fontWeight: 'Inter-Bold' },
-    body: { fontSize: 14, fontWeight: 'Inter-Regular' },
-    small: { fontSize: 12, fontWeight: 'Inter-Regular' },
+    h1: { fontSize: 26, fontFamily: 'Inter-ExtraBold' },
+    h2: { fontSize: 20, fontFamily: 'Inter-Bold' },
+    body: { fontSize: 14, fontFamily: 'Inter-Regular' },
+    small: { fontSize: 12, fontFamily: 'Inter-Regular' },
 };
 
 export default typography;
