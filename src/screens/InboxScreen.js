@@ -20,7 +20,7 @@ export default function InboxScreen({ navigation }) {
 
     const handleConfirm = () => {
         const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
-        updateRequestStatus(modalRequest.id.newStatus);
+        updateRequestStatus(modalRequest.id, newStatus);
         closeModal();
     };
 

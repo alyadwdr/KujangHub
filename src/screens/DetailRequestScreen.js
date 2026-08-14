@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Linking } from "react-native";
 import { colors, typography, spacing } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
@@ -89,7 +89,10 @@ export default function DetailRequestScreen({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                 ) : (
-                    <TouchableOpacity style={styles.redirectButton}>
+                    <TouchableOpacity 
+                        style={styles.redirectButton}
+                        onPress={() => Linking.openURL(request.webviewUrl)}
+                    >
                         <Text style={{ color: colors.kujangIdBlue }}>
                             Proses di {request.sourceApp}
                         </Text>
