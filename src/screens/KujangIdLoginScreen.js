@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#E5E7EB",
         padding: spacing.lg,
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
     },
     logo: {
         width: 48,

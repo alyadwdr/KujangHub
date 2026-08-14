@@ -17,7 +17,7 @@ export default function PendingPerAppScreen({ navigation }) {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Text style={{ fontSize: 18 }}>‹</Text>
+                    <Text style={{ fontSize: 24 }}>‹</Text>
                 </TouchableOpacity>
                 <Text style={[typography.h2, styles.headerTitle]}>Pending per Aplikasi</Text>
                 <Image 
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
         paddingTop: spacing.lg,
     },
     backButton: {
-        width: 36,
-        height: 36,
+        width: 32,
+        height: 32,
         borderRadius: 8,
         backgroundColor: colors.surface,
         justifyContent: "center",
@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 12,
         padding: spacing.md,
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
     },
     iconBox: {
         width: 44,

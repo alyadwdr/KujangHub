@@ -37,12 +37,20 @@ export default function InboxScreen({ navigation }) {
             </View>
 
             {/* Search & Filter */}
-            <TextInput
-                style={styles.search}
-                placeholder="Search..."
-                value={search}
-                onChangeText={setSearch}
-            />
+            <View style={styles.searchRow}>
+                <Image
+                    source={require("../assets/images/search-icon.png")}
+                    style={styles.searchIcon}
+                    resizeMode="contain"
+                />
+                <TextInput
+                    style={styles.search}
+                    placeholder="Search..."
+                    value={search}
+                    onChangeText={setSearch}
+                />
+                
+            </View>
 
             <View style={styles.filterRow}>
                 {FILTERS.map((label) => (
@@ -142,12 +150,24 @@ const styles = StyleSheet.create({
         width: 28,
         height: 28,
     },
-    search: {
+    searchRow: {
+        flexDirection: "row",
+        alignItems: "center",
         backgroundColor: colors.surface,
         marginHorizontal: spacing.lg,
         marginTop: spacing.lg,
         borderRadius: 8,
-        padding: spacing.md,
+        paddingHorizontal: spacing.md,
+    },
+    searchIcon: { 
+        width: 16,
+        height: 16,
+        marginRight: spacing.sm,
+        tintColor: colors.textSecondary
+    },
+    searchInput: {
+        flex: 1,
+        paddingVertical: spacing.md,
     },
     filterRow: {
         flexDirection: "row",
@@ -175,6 +195,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 12,
         padding: spacing.md,
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
     },
     cardTopRow: {
         flexDirection: "row",

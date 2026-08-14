@@ -119,6 +119,8 @@ const styles = StyleSheet.create({
         paddingBottom: spacing.lg,
         paddingHorizontal: spacing.lg,
         alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
     },
     avatar: {
         position: "absolute",
@@ -137,6 +139,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 12,
         paddingHorizontal: spacing.md,
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
     },
     row: {
         flexDirection: "row",
