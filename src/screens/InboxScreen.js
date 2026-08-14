@@ -26,6 +26,7 @@ export default function InboxScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={[typography.h1, styles.title]}>Inbox</Text>
                 <Image
@@ -35,6 +36,7 @@ export default function InboxScreen({ navigation }) {
                 />
             </View>
 
+            {/* Search & Filter */}
             <TextInput
                 style={styles.search}
                 placeholder="Search..."
@@ -50,6 +52,7 @@ export default function InboxScreen({ navigation }) {
                 ))}
             </View>
 
+            {/* Request List */}
             <FlatList
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}
@@ -81,6 +84,7 @@ export default function InboxScreen({ navigation }) {
                             </Text>
                         </View>
 
+                        {/* Approval Actions */}
                         {item.actionType === "approve_reject" ? (
                             <View style={styles.actionRow}>
                                 <TouchableOpacity
@@ -108,6 +112,7 @@ export default function InboxScreen({ navigation }) {
                 )}
             />
 
+            {/* Confirmation Modal */}
             <ConfirmModal
                 visible={!!modalRequest}
                 type={modalRequest?.type}

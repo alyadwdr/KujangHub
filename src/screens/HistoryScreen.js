@@ -28,6 +28,7 @@ export default function HistoryScreen() {
 
     return (
         <View style={styles.container}>
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={[typography.h1, styles.title]}>History</Text>
                 <Image
@@ -37,6 +38,7 @@ export default function HistoryScreen() {
                 />
             </View>
 
+            {/* Search */}
             <TextInput
                 style={styles.search}
                 placeholder="Search..."
@@ -44,6 +46,7 @@ export default function HistoryScreen() {
                 onChangeText={setSearch}
             />
 
+            {/* Filter Tabs */}
             <View style={styles.tabRow}>
                 {TABS.map((tab) => {
                     const isActive = activeTab === tab.key;
@@ -61,6 +64,7 @@ export default function HistoryScreen() {
                 })}
             </View>
             
+            {/* History List */}
             <FlatList
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}

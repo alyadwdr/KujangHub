@@ -23,6 +23,7 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={[typography.h1, { color: colors.primary }]}>Kujang Hub</Text>
                 <Image
@@ -31,11 +32,13 @@ export default function HomeScreen({ navigation }) {
                     resizeMode='contain'
                 />
             </View>
+            {/* Greeting */}
             <Text style={styles.greeting}>
                 Halo, <Text style={{ fontFamily: "Inter-Bold" }}>{dummyUser.name}</Text>
             </Text>
             <View style={styles.divider} />
 
+            {/* Aplikasi Terintegrasi */}
             <View style={styles.card}>
                 <View style={styles.cardHeaderRow}>
                     <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
@@ -74,6 +77,7 @@ export default function HomeScreen({ navigation }) {
             </View>
         </View>
 
+        {/* Request Terbaru */}
         <View style={styles.card}>
             <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
                 {pendingRequests.length} request terbaru

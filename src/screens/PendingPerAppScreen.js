@@ -14,6 +14,7 @@ export default function PendingPerAppScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                     <Text style={{ fontSize: 18 }}>‹</Text>
@@ -26,8 +27,10 @@ export default function PendingPerAppScreen({ navigation }) {
                 />
             </View>
 
+            {/* Subtitle */}
             <Text style={styles.subtitle}>Aplikasi yang terhubung ke Kujang Hub</Text>
 
+            {/* App List */}
             <FlatList
                 data={appsWithCount}
                 keyExtractor={(item) => item.id}

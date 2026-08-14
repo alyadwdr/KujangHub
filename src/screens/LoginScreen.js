@@ -14,14 +14,17 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {/* Header Background */}
             <View style={styles.headerBackground} />
 
             <View style={styles.content}>
+                {/* Brand & Subtitle */}
                 <Text style={[typography.h1, styles.brand]}>Kujang Hub</Text>
                 <Text style={[typography.body, styles.subtitle]}>
                     Enter your credentials below to <Text style={styles.subtitleHighlight}>login</Text>
                 </Text>
 
+                {/* Login Form */}
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
@@ -40,12 +43,14 @@ export default function LoginScreen({ navigation }) {
                     <Text style={styles.loginButtonText}>Log In</Text>
                 </TouchableOpacity>
 
+                {/* Divider */}
                 <View style={styles.orRow}>
                     <View style={styles.divider} />
                     <Text style={styles.orText}>OR</Text>
                     <View style={styles.divider} />
                 </View>
 
+                {/* Kujang ID Login */}
                 <TouchableOpacity
                     style={styles.kujangIdButton}
                     onPress={() => navigation.navigate("KujangIdLogin")}

@@ -36,6 +36,7 @@ export default function DetailRequestScreen({ route, navigation }) {
 
             <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: 100 }}>
 
+                {/* Requester Info */}
                 <View style={styles.requesterCard}>
                     <Image
                         source={require("../assets/images/person-icon.png")}
@@ -51,6 +52,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                     </View>
                 </View>
 
+                {/* WebView Detail */}
                 <View style={styles.webviewCard}>
                     <View style={styles.urlBar}>
                         <Text style={styles.urlText} numberOfLines={1}>
@@ -66,6 +68,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                     </View>
                 </View>
 
+                {/* Attachments */}
                 {request.attachments?.length > 0 && (
                     <View style={styles.attachmentCard}>
                         <Text style={styles.attachmentTitle}>Lampiran</Text>
@@ -78,6 +81,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                 )}
             </ScrollView>
             
+            {/* Footer Actions */}
             <View style={styles.footer}>
                 {request.actionType === "approve_reject" ? (
                     <View style={styles.actionRow}>
@@ -100,6 +104,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                 )}
             </View>
 
+            {/* Confirmation Modal */}
             <ConfirmModal
                 visible={modalType !== null}
                 type={modalType}

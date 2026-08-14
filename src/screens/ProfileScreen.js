@@ -20,6 +20,7 @@ export default function ProfileScreen({ navigation }) {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
+            {/* Header */}
             <View style={styles.header}>
                 <Text style={[typography.h1, { color: colors.primary }]}>Profile</Text>
                 <Image
@@ -29,6 +30,7 @@ export default function ProfileScreen({ navigation }) {
                 />
             </View>
 
+            {/* Profile Card */}
             <View style={styles.profileCardWrapper}>
                 <View style={styles.profileCard}>
                     <Text style={typography.h2}>{dummyUser.name}</Text>
@@ -40,6 +42,7 @@ export default function ProfileScreen({ navigation }) {
                 />
             </View>
 
+            {/* User Info */}
             <Text style={styles.sectionLabel}>Informasi Profil</Text>
             <View style={styles.card}>
                 <View style={styles.row}>
@@ -53,6 +56,7 @@ export default function ProfileScreen({ navigation }) {
                 </View>
             </View>
 
+            {/* Settings */}
             <Text style={styles.sectionLabel}>Pengaturan</Text>
             <View style={styles.card}>
                 <View style={styles.row}>
@@ -76,6 +80,7 @@ export default function ProfileScreen({ navigation }) {
                 </View>
             </View>
 
+            {/* Logout */}
             <TouchableOpacity style={styles.logoutButton} onPress={() => setShowLogoutModal(true)}>
                 <Text style={{ color: colors.danger }}>Keluar</Text>
             </TouchableOpacity>

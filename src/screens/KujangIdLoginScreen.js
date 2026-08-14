@@ -16,9 +16,11 @@ export default function KujangIdLoginScreen({ navigation }) {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            {/* Header */}
             <Text style={[typography.h1, styles.brand]}>KUJANG ID</Text>
             <Text style={styles.subtitle}>Identify Provider</Text>
 
+            {/* Provider Info */}
             <View style={styles.card}>
                 <Image
                     source={require("../assets/images/demplon-logo.png")}
@@ -30,6 +32,7 @@ export default function KujangIdLoginScreen({ navigation }) {
                 <Text style={[typography.h1, { color: colors.kujangIdBlue }]}>DEMPLON</Text>
                 <Text style={styles.helperText}>Please enter your credentials below</Text>
 
+                {/* SSO Login Options */}
                 {SSO_PROVIDERS.map((provider) => (
                     <TouchableOpacity key={provider.label} style={styles.ssoButton}>
                         <Image source={provider.icon} style={styles.ssoIcon} resizeMode="contain" />
@@ -43,6 +46,7 @@ export default function KujangIdLoginScreen({ navigation }) {
                     <View style={styles.divider} />
                 </View>
 
+                {/* Manual Login Form */}
                 <Text style={styles.inputLabel}>Username</Text>
                 <TextInput
                     style={styles.input}
@@ -67,6 +71,7 @@ export default function KujangIdLoginScreen({ navigation }) {
                     <Text style={styles.signInButtonText}>Sign In</Text>
                 </TouchableOpacity>
 
+                {/* Terms & Privacy */}
                 <Text style={styles.terms}>
                     By continuing, you agree to our{" "}
                     <Text style={styles.termsLink}>Terms of Service</Text> and{" "}
