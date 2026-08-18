@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../theme";
 import { Image } from "react-native";
+import { useRequests } from "../context/RequestsContext";
 
 import HomeScreen from "../screens/HomeScreen";
 import InboxScreen from "../screens/InboxScreen";
@@ -18,6 +19,8 @@ const ICONS = {
 }
 
 export default function MainTabs() {
+    const { pendingRequests } = useRequests();
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -34,7 +37,23 @@ export default function MainTabs() {
             })}
         >
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Inbox" component={InboxScreen} />
+            <Tab.Screen 
+                name="Inbox" 
+                component={InboxScreen} 
+                options={{
+                    tabBarBadge: pendingRequests.length > 0 ? pendingRequests.length : undefined,
+                    tabBarBadgeStyle: {
+                        backgroundColor: colors.primary,
+                        minWidth: 18,
+                        height: 18,
+                        borderRadius: 9,
+                        fontSize: 12,
+                        lineHeight: 21,
+                        textAlign: "center",
+                        paddingHorizontal: 0,
+                    },
+                }}
+            />
             <Tab.Screen name="History" component={HistoryScreen} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>

@@ -65,6 +65,7 @@ export default function InboxScreen({ navigation }) {
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
+                ListEmptyComponent={<Text style={styles.empty}>Tidak ada request</Text>}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.card}
@@ -213,6 +214,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing.lg,
         paddingBottom: spacing.md,
         gap: spacing.md,
+    },
+    empty: {
+        textAlign: "center",
+        color: colors.textSecondary,
+        marginTop: spacing.xl,
     },
     card: {
         backgroundColor: colors.surface,

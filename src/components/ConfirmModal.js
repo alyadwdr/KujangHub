@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image } from "react-native";
 import{ colors, spacing, typography } from "../theme";
-import { setSurfaceProps } from "react-native/types_generated/Libraries/ReactNative/AppRegistryImpl";
 
 export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
     const [note, setNote] = useState("");

@@ -100,14 +100,24 @@ export default function HistoryScreen() {
                             </Text>
                         </View>
 
-                        <Text
-                            style={[
-                                styles.statusText,
-                                { color: item.status === "approved" ? colors.primary : colors.danger },
-                            ]}
-                        >
-                            {item.status === "approved" ? "✓ Telah disetujui" : "✕ Telah ditolak"}
-                        </Text>
+                        <View style={styles.statusRow}>
+                            <Text
+                                style={[
+                                    styles.statusText,
+                                    { color: item.status === "approved" ? colors.primary : colors.danger },
+                                ]}
+                            >
+                                {item.status === "approved" ? "✓ Telah disetujui" : "✕ Telah ditolak"}
+                            </Text>
+                            {item.confirmedAt && (
+                                <>
+                                <View style={styles.statusDot} />
+                                <Text style={styles.confirmedTime}>
+                                    {new Date(item.confirmedAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit"})} WIB
+                                </Text>
+                                </>
+                            )}
+                        </View>
                     </View>
                 )}
             />
@@ -240,10 +250,25 @@ const styles = StyleSheet.create({
         fontFamily: "Inter-Bold",
         marginLeft: spacing.xs,
     },
-    statusText: {
+    statusRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
         marginTop: spacing.sm,
-        textAlign: "right",
+        gap: 6,
+    },
+    statusText: {
         fontFamily: "Inter-Bold",
         fontSize: 12,
-    }
+    },
+    statusDot: {
+        width: 3,
+        height: 3,
+        borderRadius: 2,
+        backgroundColor: colors.textSecondary,
+    },
+    confirmedTime: {
+        fontSize: 12,
+        color: colors.textSecondary,
+    },
 });

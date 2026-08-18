@@ -82,7 +82,10 @@ export default function HomeScreen({ navigation }) {
             <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
                 {pendingRequests.length} request terbaru
             </Text>
-            {pendingRequests.map((item, index) => (
+            {pendingRequests.length === 0 ? (
+                <Text style={styles.emptyText}>Tidak ada request</Text>
+            ) : (
+                pendingRequests.map((item, index) => (
                 <View
                     key={item.id}
                     style={[styles.requestRow, index > 0 && styles.requestRowDivider]}
@@ -109,7 +112,8 @@ export default function HomeScreen({ navigation }) {
                         <Text style={{ color: colors.primary, fontFamily: "Inter-Bold" }}>Proses</Text>
                     </TouchableOpacity>
                 </View>
-            ))}
+                ))
+            )}
         </View>
         </ScrollView>
     );
@@ -211,5 +215,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing.sm,
         paddingVertical: 6,
         borderRadius: 8,
+    },
+    emptyText: {
+        textAlign: "center",
+        color: colors.textSecondary,
+        paddingVertical: spacing.md,
     },
 });

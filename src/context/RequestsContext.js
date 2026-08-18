@@ -8,7 +8,9 @@ export function RequestsProvider({ children }) {
 
     const updateRequestStatus = (id, status) => {
         setRequests((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, status } : item))
+            prev.map((item) => 
+                item.id === id ? { ...item, status, confirmedAt: new Date().toISOString() } : item
+            )
         );
     };
 
