@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image } from "react-native";
 import{ colors, spacing, typography } from "../theme";
+import { setSurfaceProps } from "react-native/types_generated/Libraries/ReactNative/AppRegistryImpl";
 
 export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
     const [note, setNote] = useState("");
 
     const config = {
         approve: {
+            icon: require("../assets/images/check-icon2.png"),
             title: "Setujui request ini",
             description: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
             confirmLabel: "Setujui",
@@ -14,6 +16,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
             showNoteInput: true,
         },
         reject: {
+            icon: require("../assets/images/x-icon2.png"),
             title: "Tolak request ini",
             description: "Status akan diperbarui dan pemohon akan mendapat notifikasi",
             confirmLabel: "Tolak",
@@ -21,6 +24,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
             showNoteInput: true,
         },
         logout: {
+            icon: null,
             title: "Keluar dari akun?",
             description: "Anda perlu login lagi lewat Kujang ID untuk masuk ke aplikasi",
             confirmLabel: "Ya, Keluar",
@@ -40,7 +44,16 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
         <Modal visible={visible} transparent animationType="fade">
             <View style={styles.backdrop}>
                 <View style={styles.card}>
-                    <Text style={typography.h2}>{current.title}</Text>
+                    <View style={styles.titleRow}>
+                        {current.icon && (
+                            <Image
+                                source={current.icon}
+                                style={[styles.titleIcon, { tintColor: current.iconColor }]}
+                                resizeMode="contain"
+                            />
+                        )}
+                        <Text style={typography.h2}>{current.title}</Text>
+                    </View>
                     <Text style={styles.description}>{current.description}</Text>
 
                     {current.showNoteInput && (
@@ -83,6 +96,15 @@ const styles = StyleSheet.create({
         backgroundColor: colors.surface,
         borderRadius: 16,
         padding: spacing.lg,
+    },
+    titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
+    },
+    titleIcon: {
+        width: 20,
+        height: 20,
     },
     description: {
         color: colors.textSecondary,

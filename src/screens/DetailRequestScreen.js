@@ -55,8 +55,13 @@ export default function DetailRequestScreen({ route, navigation }) {
                 {/* WebView Detail */}
                 <View style={styles.webviewCard}>
                     <View style={styles.urlBar}>
+                        <Image
+                            source={require("../assets/images/lock-icon.png")}
+                            style={styles.lockIcon}
+                            resizeMode="contain"
+                        />
                         <Text style={styles.urlText} numberOfLines={1}>
-                            🔒 {request.webviewUrl}
+                            {request.webviewUrl}
                         </Text>
                     </View>
                     <View style={styles.webviewContainer}>
@@ -86,20 +91,38 @@ export default function DetailRequestScreen({ route, navigation }) {
                 {request.actionType === "approve_reject" ? (
                     <View style={styles.actionRow}>
                         <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
-                            <Text style={{ color: colors.danger }}>Tolak</Text>
+                            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                <Image
+                                    source={require("../assets/images/x-icon.png")}
+                                    style={{ width: 14, height: 14, tintColor: colors.danger }}
+                                    resizeMode="contain"
+                                />
+                                <Text style={{ color: colors.danger }}>Tolak</Text>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.approveButton} onPress={() => setModalType("approve")}>
-                            <Text style={{ color: colors.white }}>Setujui</Text>
+                            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                <Image
+                                    source={require("../assets/images/check-icon.png")}
+                                    style={{ width: 14, height: 14, tintColor: colors.white }}
+                                    resizeMode="contain"
+                                />
+                                <Text style={{ color: colors.white }}>Setujui</Text>
+                            </View>
                         </TouchableOpacity>
                     </View>
                 ) : (
-                    <TouchableOpacity 
-                        style={styles.redirectButton}
-                        onPress={() => Linking.openURL(request.webviewUrl)}
-                    >
-                        <Text style={{ color: colors.kujangIdBlue }}>
-                            Proses di {request.sourceApp}
-                        </Text>
+                    <TouchableOpacity style={styles.redirectButton} onPress={() => Linking.openURL(request.webviewUrl)}>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                            <Image
+                                source={require("../assets/images/redirect-icon.png")}
+                                style={{ width: 14, height: 14, tintColor: colors.kujangIdBlue }}
+                                resizeMode="contain"
+                            />
+                            <Text style={{ color: colors.kujangIdBlue }}>
+                                Proses di {request.sourceApp}
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 )}
             </View>
@@ -186,8 +209,16 @@ const styles = StyleSheet.create({
         borderColor: "#E5E7EB",
     },
     urlBar: {
+        flexDirection: "row",
+        alignItems: "center",
         padding: spacing.sm,
         backgroundColor: "#F3F4F6",
+    },
+    lockIcon: {
+        width: 12,
+        height: 12,
+        marginRight: 6,
+        tintColor: colors.textSecondary,
     },
     urlText: {
         fontSize: 12,
@@ -211,7 +242,7 @@ const styles = StyleSheet.create({
         marginBottom: spacing.sm,
     },
     attachmentRow: {
-        backgroundColor: colors.background,
+        backgroundColor: "#F3F4F6",
         borderRadius: 8,
         padding: spacing.md,
     },

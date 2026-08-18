@@ -99,13 +99,27 @@ export default function InboxScreen({ navigation }) {
                                     style={styles.rejectButton}
                                     onPress={() => openModal(item.id, "reject")}
                                 >
-                                    <Text style={styles.rejectText}>✕ Tolak</Text>
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 6}}>
+                                        <Image
+                                            source={require("../assets/images/x-icon.png")}
+                                            style={{ width: 14, height: 14, tintColor: colors.danger }}
+                                            resizeMode="contain"
+                                        />
+                                        <Text style={styles.rejectText}>Tolak</Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.approveButton}
                                     onPress={() => openModal(item.id, "approve")}
                                 >
-                                    <Text style={styles.approveText}>✓ Setujui</Text>
+                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                        <Image
+                                            source={require("../assets/images/check-icon.png")}
+                                            style={{ width: 14, height: 14, tintColor: colors.white }}
+                                            resizeMode="contain"
+                                        />
+                                        <Text style={styles.approveText}>Setujui</Text>
+                                    </View>
                                 </TouchableOpacity>
                             </View>
                         ) : (
@@ -113,7 +127,14 @@ export default function InboxScreen({ navigation }) {
                                 style={styles.redirectButton}
                                 onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
                             >
-                                <Text style={styles.redirectText}>Proses di {item.sourceApp}</Text>
+                                <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                    <Image
+                                        source={require("../assets/images/redirect-icon.png")}
+                                        style={{ width: 14, height: 14, tintColor: colors.kujangIdBlue }}
+                                        resizeMode="contain"
+                                    />
+                                    <Text style={styles.redirectText}>Proses di {item.sourceApp}</Text>
+                                </View>
                             </TouchableOpacity>
                         )}
                     </TouchableOpacity>
@@ -174,6 +195,7 @@ const styles = StyleSheet.create({
         gap: spacing.sm,
         paddingHorizontal: spacing.lg,
         marginTop: spacing.md,
+        marginBottom: spacing.md,
     },
     filterChip: {
         borderWidth: 1,
@@ -188,7 +210,8 @@ const styles = StyleSheet.create({
         color: colors.primary,
     },
     list: {
-        padding: spacing.lg,
+        paddingHorizontal: spacing.lg,
+        paddingBottom: spacing.md,
         gap: spacing.md,
     },
     card: {
