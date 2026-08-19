@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Animated, Easing } from "react-native";
+import { View, Text, StyleSheet, Animated, Easing, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -33,7 +33,11 @@ export default function SplashScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Animated.View style={{ transform: [{ translateY }], opacity }}>
-                <View style={styles.bell} />
+                <Image
+                    source={require("../assets/images/bell-icon.png")}
+                    style={styles.bellIcon}
+                    resizeMode="contain"
+                />
             </Animated.View>
             <Text style={[typography.h1, styles.title]}>Kujang Hub</Text>
         </View>
@@ -47,11 +51,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    bell: {
+    bellIcon: {
         width: 90,
         height: 90,
-        borderRadius: 45,
-        backgroundColor: colors.primary,
     },
     title: {
         marginTop: spacing.md,
