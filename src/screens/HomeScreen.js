@@ -4,6 +4,7 @@ import { colors, spacing, typography } from '../theme';
 import { useRequests } from '../context/RequestsContext';
 import dummyApps from '../data/dummyApps';
 import dummyUser from '../data/dummyUser';
+import { formatTimeHome } from '../utils/formatDate';
 
 export default function HomeScreen({ navigation }) {
     const { pendingRequests } = useRequests();
@@ -102,7 +103,7 @@ export default function HomeScreen({ navigation }) {
                             {item.title}
                         </Text>
                         <Text style={[typography.small, { color: colors.textSecondary }]}>
-                            {item.sourceApp} | {item.date}
+                            {item.sourceApp} | {formatTimeHome(item.date)}
                         </Text>
                     </View>
                     <TouchableOpacity 

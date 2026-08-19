@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, TextInput } from "react-native";
 import RootNavigator from './src/navigation/RootNavigator';
 import { RequestsProvider } from "./src/context/RequestsContext";
+import Toast from 'react-native-toast-message';
 
 // @ts-ignore
 Text.defaultProps = Text.defaultProps || {};
@@ -17,6 +18,7 @@ function App() {
   return (
     <RequestsProvider>
       <RootNavigator />
+      <Toast />
     </RequestsProvider>
   );
 }

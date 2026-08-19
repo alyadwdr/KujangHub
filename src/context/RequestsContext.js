@@ -6,10 +6,10 @@ const RequestsContext = createContext();
 export function RequestsProvider({ children }) {
     const [requests, setRequests] = useState(initialRequests);
 
-    const updateRequestStatus = (id, status) => {
+    const updateRequestStatus = (id, status, decisionNote) => {
         setRequests((prev) =>
             prev.map((item) => 
-                item.id === id ? { ...item, status, confirmedAt: new Date().toISOString() } : item
+                item.id === id ? { ...item, status, confirmedAt: new Date().toISOString(), decisionNote: decisionNote || "" } : item
             )
         );
     };

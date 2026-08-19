@@ -4,7 +4,7 @@ export const dummyRequests = [
         sourceApp: "BIOS",
         badgeColor: "#1CA651",
         title: "Peminjaman APAR CO2 21kg General",
-        date: "10 menit yang lalu",
+        date: new Date().toISOString(),
         requester: {
             name: "Tono Sartono",
             nip: "3082625",
@@ -26,7 +26,7 @@ export const dummyRequests = [
         sourceApp: "Simrisk",
         badgeColor: "#2563EB",
         title: "Approval RSCA - Risiko Operasional IT",
-        date: "46 menit yang lalu",
+        date: new Date(Date.now() - 46 * 60 * 1000).toISOString(),
         requester: {
             name: "Tono Sartono",
             nip: "3082625",
@@ -48,7 +48,7 @@ export const dummyRequests = [
         sourceApp: "Nutriku",
         badgeColor: "#FFB900",  
         title: "ORD/20260721835/0004",
-        date: "3 jam yang lalu",
+        date: new Date(Date.now() - 26 * 60 * 1000).toISOString(),
         requester: {
             name: "Tono Sartono",
             nip: "3082625",
@@ -68,7 +68,7 @@ export const dummyRequests = [
     sourceApp: "DTS",
     badgeColor: "#2F6FE0",
     title: "Approval Dokumen Kontrak Vendor",
-    date: "2 jam yang lalu",
+    date: new Date(Date.now() - 26 * 60 * 1000).toISOString(),
     requester: { name: "Tono Sartono", nip: "3082625", dept: "Teknologi Informasi PKC" },
     actionType: "approve_reject",
     webviewUrl: "https://pupuk-kujang.co.id/",

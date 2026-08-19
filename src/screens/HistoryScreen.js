@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
+import { formatTimeInbox } from "../utils/formatDate";
 
 const TABS = [
     { key: "all", label: "Semua" },
@@ -10,7 +11,7 @@ const TABS = [
     { key: "expired", label: "Terlewat" },
 ]
 
-export default function HistoryScreen() {
+export default function HistoryScreen({ navigation }) {
     const { historyRequests } = useRequests();
     const [activeTab, setActiveTab] = useState("all");
     const [search, setSearch] = useState("");
@@ -78,12 +79,15 @@ export default function HistoryScreen() {
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
                 renderItem={({ item }) => (
-                    <View style={styles.card}>
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                    >
                         <View style={styles.cardTopRow}>
                             <View style={styles.badge}>
                                 <Text style={styles.badgeText}>{item.sourceApp}</Text>
                             </View>
-                            <Text style={styles.date}>{item.date}</Text>
+                            <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
                         </View>
 
                         <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
@@ -118,7 +122,7 @@ export default function HistoryScreen() {
                                 </>
                             )}
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>

@@ -4,6 +4,7 @@ import { colors, typography, spacing } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
 import { WebView } from "react-native-webview";
+import Toast from "react-native-toast-message";
 
 export default function DetailRequestScreen({ route, navigation }) {
     const { requestId } = route.params;
@@ -52,6 +53,13 @@ export default function DetailRequestScreen({ route, navigation }) {
                     </View>
                 </View>
 
+                {request.decisionNote && (
+                    <View style={styles.decisionNoteCard}>
+                        <Text style={styles.decisionNoteLabel}>Catatan Anda:</Text>
+                        <Text style={styles.decisionNoteText}>{request.decisionNote}</Text>
+                    </View>
+                )}
+
                 {/* WebView Detail */}
                 <View style={styles.webviewCard}>
                     <View style={styles.urlBar}>
@@ -88,7 +96,11 @@ export default function DetailRequestScreen({ route, navigation }) {
             
             {/* Footer Actions */}
             <View style={styles.footer}>
-                {request.actionType === "approve_reject" ? (
+                {request.status === "approved" || request.status === "rejected" ? (
+                    <TouchableOpacity style={styles.backToListButton} onPress={() => navigation.goBack()}>
+                        <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Kembali</Text>
+                    </TouchableOpacity>
+                ) : request.actionType === "approve_reject" ? (
                     <View style={styles.actionRow}>
                         <TouchableOpacity style={styles.rejectButton} onPress={() => setModalType("reject")}>
                             <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
@@ -134,9 +146,14 @@ export default function DetailRequestScreen({ route, navigation }) {
                 onCancel={() => setModalType(null)}
                 onConfirm={(note) => {
                     const newStatus = modalType === "approve" ? "approved" : "rejected";
-                    updateRequestStatus(request.id, newStatus); 
+                    updateRequestStatus(request.id, newStatus, note); 
                     setModalType(null);
                     navigation.goBack();
+
+                    Toast.show({
+                        type: newStatus === "approved" ? "success" : "error",
+                        text1: newStatus === "approved" ? "Requuest disetujui" : "Request ditolak",
+                    });
                 }}
             />
         </View>
@@ -249,6 +266,24 @@ const styles = StyleSheet.create({
     attachmentText: {
         fontFamily: "Inter-Bold",
     },
+    decisionNoteCard: {
+        backgroundColor: colors.surface,
+        borderRadius: 12,
+        padding: spacing.md,
+        marginBottom: spacing.md,
+        borderWidth: 1,
+        borderColor: "#E5E7EB"
+    },
+    decisionNoteLabel: {
+        fontFamily: "Inter-Bold",
+        marginBottom: spacing.xs,
+        fontSize: 14,
+        color: colors.textSecondary,
+    },
+    decisionNoteText: {
+        fontStyle: "italic",
+        color: colors.textSecondary,
+    },
     actionRow: {
         flexDirection: "row",
         gap: spacing.sm,
@@ -283,4 +318,11 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "#E5E7EB"
     },
+    backToListButton: {
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
+        borderRadius: 8,
+        paddingVertical: spacing.md,
+        alignItems: "center",
+    }
 });

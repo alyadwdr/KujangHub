@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } 
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
+import { formatTimeInbox } from "../utils/formatDate";
+import Toast from "react-native-toast-message";
 
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 
@@ -18,10 +20,15 @@ export default function InboxScreen({ navigation }) {
     const openModal = (id, type) => setModalRequest({ id, type });
     const closeModal = () => setModalRequest(null);
 
-    const handleConfirm = () => {
+    const handleConfirm = (note) => {
         const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
-        updateRequestStatus(modalRequest.id, newStatus);
+        updateRequestStatus(modalRequest.id, newStatus, note);
         closeModal();
+
+        Toast.show({
+            type: newStatus === "approved" ? "success" : "error",
+            text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
+        });
     };
 
     return (
@@ -76,7 +83,7 @@ export default function InboxScreen({ navigation }) {
                             <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22` }]}>
                                 <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
                             </View>
-                            <Text style={styles.date}>{item.date}</Text>
+                            <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
                         </View>
 
                         <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
