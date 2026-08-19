@@ -152,7 +152,7 @@ export default function DetailRequestScreen({ route, navigation }) {
 
                     Toast.show({
                         type: newStatus === "approved" ? "success" : "error",
-                        text1: newStatus === "approved" ? "Requuest disetujui" : "Request ditolak",
+                        text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
                     });
                 }}
             />

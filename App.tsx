@@ -3,6 +3,7 @@ import { Text, TextInput } from "react-native";
 import RootNavigator from './src/navigation/RootNavigator';
 import { RequestsProvider } from "./src/context/RequestsContext";
 import Toast from 'react-native-toast-message';
+import { toastConfig } from "./src/components/CustomToast";
 
 // @ts-ignore
 Text.defaultProps = Text.defaultProps || {};
@@ -18,7 +19,7 @@ function App() {
   return (
     <RequestsProvider>
       <RootNavigator />
-      <Toast />
+      <Toast config={toastConfig} />
     </RequestsProvider>
   );
 }

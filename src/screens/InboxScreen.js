@@ -51,7 +51,7 @@ export default function InboxScreen({ navigation }) {
                     resizeMode="contain"
                 />
                 <TextInput
-                    style={styles.search}
+                    style={styles.searchInput}
                     placeholder="Search..."
                     value={search}
                     onChangeText={setSearch}

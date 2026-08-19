@@ -47,7 +47,7 @@ export default function HistoryScreen({ navigation }) {
                     resizeMode="contain"
                 />
                 <TextInput
-                    style={styles.search}
+                    style={styles.searchInput}
                     placeholder="Search..."
                     value={search}
                     onChangeText={setSearch}
