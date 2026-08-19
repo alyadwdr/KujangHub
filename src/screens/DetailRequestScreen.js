@@ -35,7 +35,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                 />
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: spacing.lg, paddingBottom: 100 }}>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: spacing.lg, paddingVertical: spacing.xs, paddingBottom: 100 }}>
 
                 {/* Requester Info */}
                 <View style={styles.requesterCard}>
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: spacing.lg,
         paddingTop: spacing.lg,
+        paddingBottom: spacing.md,
     },
     backButton: {
         width: 32,
