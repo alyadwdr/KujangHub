@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../theme";
 import { Image } from "react-native";
 import { useRequests } from "../context/RequestsContext";
+import AnimatedTabIcon from "../components/AnimatedTabIcon";
 
 import HomeScreen from "../screens/HomeScreen";
 import InboxScreen from "../screens/InboxScreen";
@@ -27,11 +28,12 @@ export default function MainTabs() {
                 headerShown: false,
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.textSecondary,
-                tabBarIcon: ({ color, size }) => (
-                    <Image
+                tabBarIcon: ({ color, size, focused }) => (
+                    <AnimatedTabIcon
                         source={ICONS[route.name]}
-                        style={{ width: size, height: size, tintColor: color }}
-                        resizeMode="contain"
+                        color={color}
+                        size={size}
+                        focused={focused}
                     />
                 ),
             })}
