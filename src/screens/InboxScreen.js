@@ -6,10 +6,6 @@ import ConfirmModal from "../components/ConfirmModal";
 import { formatTimeInbox } from "../utils/formatDate";
 import Toast from "react-native-toast-message";
 
-if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 

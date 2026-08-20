@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Animated, Easing } from 'react-native';
 import { colors, spacing, typography } from '../theme';
 import { useRequests } from '../context/RequestsContext';
 import dummyApps from '../data/dummyApps';
@@ -21,6 +21,26 @@ export default function HomeScreen({ navigation }) {
     const topApps = appCounts.slice(0, 3);
     const restApps = appCounts.slice(3);
     const restCount = restApps.reduce((sum, app) => sum + app.count, 0);
+
+    const segmentBarScale = useRef(new Animated.Value(0)).current;
+    const [segmentBarWidth, setSegmentBarWidth] = useState(0);
+    const hasAnimatedBar = useRef(false);
+
+    const handleSegmentBarLayout = (e) => {
+        const width = e.nativeEvent.layout.width;
+        setSegmentBarWidth(width);
+
+        if (!hasAnimatedBar.current && width > 0) {
+            hasAnimatedBar.current = true;
+            segmentBarScale.setValue(0);
+            Animated.timing(segmentBarScale, {
+                toValue: 1,
+                duration: 1400,
+                easing: Easing.out(Easing.cubic),
+                useNativeDriver: true,
+            }).start();
+        }
+    };
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
@@ -48,17 +68,29 @@ export default function HomeScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 
-                <View style={styles.segmentBar}>
+                <Animated.View
+                    onLayout={handleSegmentBarLayout}
+                    style={[
+                        styles.segmentBar,
+                        segmentBarWidth > 0 && {
+                            transform: [
+                                { translateX: -segmentBarWidth / 2 },
+                                { scaleX: segmentBarScale },
+                                { translateX: segmentBarWidth / 2},
+                            ],
+                        },
+                    ]}
+                >
                     {topApps.map((app) => (
                         <View
                             key={app.name}
-                            style={[styles.segment, { flex: app.count, backgroundColor: app.color }]}
+                            style={[styles.segment, { flex: app.count, backgroundColor: app.color}]}
                         />
                     ))}
                     {restCount > 0 && (
                         <View style={[styles.segment, { flex: restCount, backgroundColor: colors.textSecondary }]} />
                     )}
-                </View>
+                </Animated.View>
 
                 <View style={styles.dotsRow}>
                     {topApps.map((app) => (

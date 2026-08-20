@@ -24,7 +24,7 @@ export const dummyRequests = [
     {
         id: "2",
         sourceApp: "Simrisk",
-        badgeColor: "#2563EB",
+        badgeColor: "#E4211F",
         title: "Approval RSCA - Risiko Operasional IT",
         date: new Date(Date.now() - 46 * 60 * 1000).toISOString(),
         requester: {
