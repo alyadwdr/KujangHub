@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { colors } from "../theme";
-import { Image } from "react-native";
+import { Image, TouchableWithoutFeedback, View } from "react-native";
 import { useRequests } from "../context/RequestsContext";
 import AnimatedTabIcon from "../components/AnimatedTabIcon";
 
@@ -19,6 +19,12 @@ const ICONS = {
     Profile: require("../assets/images/profile-icon.png"),
 }
 
+const CustomTabBarButton = (props) => (
+    <TouchableWithoutFeedback onPress={props.onPress} onLongPress={props.onLongPress}>
+        <View style={props.style}>{props.children}</View>
+    </TouchableWithoutFeedback>
+);
+
 export default function MainTabs() {
     const { pendingRequests } = useRequests();
 
@@ -28,6 +34,7 @@ export default function MainTabs() {
                 headerShown: false,
                 tabBarActiveTintColor: colors.primary,
                 tabBarInactiveTintColor: colors.textSecondary,
+                tabBarButton: CustomTabBarButton,
                 tabBarIcon: ({ color, size, focused }) => (
                     <AnimatedTabIcon
                         source={ICONS[route.name]}

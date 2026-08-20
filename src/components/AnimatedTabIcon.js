@@ -1,20 +1,22 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Image } from "react-native";
+import { Alert, Animated, Image } from "react-native";
 
 export default function AnimatedTabIcon({ source, color, size, focused }) {
     const scale = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
         if (focused) {
+            scale.setValue(1);
             Animated.sequence([
-                Animated.spring(scale, {
+                Animated.timing(scale, {
                     toValue: 1.25,
-                    friction: 4,
+                    duration: 100,
                     useNativeDriver: true,
                 }),
                 Animated.spring(scale, {
                     toValue: 1,
-                    friction: 4,
+                    friction: 5,
+                    tension: 50,
                     useNativeDriver: true,
                 }),
             ]).start();

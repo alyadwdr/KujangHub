@@ -1,9 +1,44 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image } from "react-native";
+import React, { useEffect, useReducer, useRef, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Image, Animated, Dimensions, Easing } from "react-native";
 import{ colors, spacing, typography } from "../theme";
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
     const [note, setNote] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
+    const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+
+    useEffect(() => {
+        if (visible) {
+            setModalVisible(true);
+        }
+    }, [visible]);
+
+    useEffect(() => {
+        if (modalVisible) {
+            translateY.setValue(SCREEN_HEIGHT);
+            Animated.spring(translateY, {
+                toValue: 0,
+                useNativeDriver: true,
+                damping: 18,
+                stiffness: 160,
+                mass: 0.9,
+            }).start();
+        }
+    }, [modalVisible]);
+
+    const animateClose = (callback) => {
+        Animated.timing(translateY, {
+            toValue: SCREEN_HEIGHT,
+            duration: 260,
+            easing: Easing.in(Easing.cubic),
+            useNativeDriver: true,
+        }).start(() => {
+            setModalVisible(false);
+            callback && callback();
+        });
+    };
 
     const config = {
         approve: {
@@ -34,15 +69,24 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
 
     const current = config[type] || config.approve;
 
+    const handleCancel = () => {
+        animateClose(() => {
+            onCancel && onCancel();
+        });
+    };
+
     const handleConfirm = () => {
-        onConfirm(note);
+        const currentNote = note;
         setNote("");
+        animateClose(() => {
+            onConfirm && onConfirm(currentNote);
+        });
     };
 
     return (
-        <Modal visible={visible} transparent animationType="fade">
+        <Modal visible={modalVisible} transparent animationType="fade" onRequestClose={handleCancel}>
             <View style={styles.backdrop}>
-                <View style={styles.card}>
+                <Animated.View style={[styles.card, { transform: [{ translateY }] }]}>
                     <View style={styles.titleRow}>
                         {current.icon && (
                             <Image
@@ -66,7 +110,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
                     )}
 
                     <View style={styles.buttonRow}>
-                        <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+                        <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
                             <Text>Batal</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -76,7 +120,7 @@ export default function ConfirmModal({ visible, type, onCancel, onConfirm }) {
                             <Text style={{ color: colors.white }}>{current.confirmLabel}</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </Animated.View>
             </View>
         </Modal>
     );
@@ -97,9 +141,9 @@ const styles = StyleSheet.create({
         padding: spacing.lg,
     },
     titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.xs,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: spacing.xs,
     },
     titleIcon: {
         width: 20,

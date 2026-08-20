@@ -1,17 +1,33 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from "react-native";
+import React, { useRef, useState } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Dimensions, Easing, LayoutAnimation, Platform, UIManager } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
 import { formatTimeInbox } from "../utils/formatDate";
 import Toast from "react-native-toast-message";
 
+if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 
 export default function InboxScreen({ navigation }) {
     const { pendingRequests, updateRequestStatus } = useRequests();
     const [search, setSearch] = useState("");
     const [modalRequest, setModalRequest] = useState(null);
+
+    const itemAnims = useRef({}).current;
+    const getItemAnim = (id) => {
+        if (!itemAnims[id]) {
+            itemAnims[id] = {
+                translateX: new Animated.Value(0),
+                opacity: new Animated.Value(1),
+            };
+        }
+        return itemAnims[id];
+    };
 
     const filteredRequests = pendingRequests.filter((item) =>
         item.title.toLowerCase().includes(search.toLowerCase())
@@ -21,14 +37,35 @@ export default function InboxScreen({ navigation }) {
     const closeModal = () => setModalRequest(null);
 
     const handleConfirm = (note) => {
-        const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
-        updateRequestStatus(modalRequest.id, newStatus, note);
-        closeModal();
+        const request = modalRequest;
+        if (!request) return;
 
-        Toast.show({
-            type: newStatus === "approved" ? "success" : "error",
-            text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
+        const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
+        const anim = getItemAnim(request.id);
+
+        Animated.timing(anim.translateX, {
+            toValue: SCREEN_WIDTH,
+            duration: 300,
+            easing: Easing.out(Easing.cubic),
+            useNativeDriver: true,
+        }).start();
+
+        Animated.timing(anim.opacity, {
+            toValue: 0,
+            duration: 250,
+            easing: Easing.out(Easing.cubic),
+            useNativeDriver: true,
+        }).start(() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            updateRequestStatus(request.id, newStatus, note);
+            delete itemAnims[request.id];
+
+            Toast.show({
+                type: newStatus === "approved" ? "success" : "error",
+                text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
+            });
         });
+        setModalRequest(null);
     };
 
     return (
@@ -73,80 +110,90 @@ export default function InboxScreen({ navigation }) {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada request</Text>}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.card}
-                        activeOpacity={0.8}
-                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
-                    >
-                        <View style={styles.cardTopRow}>
-                            <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22` }]}>
-                                <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
-                            </View>
-                            <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
-                        </View>
-
-                        <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
-                        <Text style={styles.itemNote}>{item.note}</Text>
-
-                        <View style={styles.requesterRow}>
-                            <Image
-                                source={require("../assets/images/person-icon.png")}
-                                style={styles.avatar}
-                                resizeMode="cover"
-                            />
-                            <Text style={styles.requesterText}>
-                                {item.requester.name} - Dept. {item.requester.dept}
-                            </Text>
-                        </View>
-
-                        {/* Approval Actions */}
-                        {item.actionType === "approve_reject" ? (
-                            <View style={styles.actionRow}>
-                                <TouchableOpacity
-                                    style={styles.rejectButton}
-                                    onPress={() => openModal(item.id, "reject")}
-                                >
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 6}}>
-                                        <Image
-                                            source={require("../assets/images/x-icon.png")}
-                                            style={{ width: 14, height: 14, tintColor: colors.danger }}
-                                            resizeMode="contain"
-                                        />
-                                        <Text style={styles.rejectText}>Tolak</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.approveButton}
-                                    onPress={() => openModal(item.id, "approve")}
-                                >
-                                    <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                                        <Image
-                                            source={require("../assets/images/check-icon.png")}
-                                            style={{ width: 14, height: 14, tintColor: colors.white }}
-                                            resizeMode="contain"
-                                        />
-                                        <Text style={styles.approveText}>Setujui</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        ) : (
+                renderItem={({ item }) => {
+                    const anim = getItemAnim(item.id);
+                    return (
+                        <Animated.View
+                            style={{
+                                opacity: anim.opacity,
+                                transform: [{ translateX: anim.translateX }],
+                            }}
+                        >
                             <TouchableOpacity
-                                style={styles.redirectButton}
+                                style={styles.card}
+                                activeOpacity={0.8}
                                 onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
                             >
-                                <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-                                    <Image
-                                        source={require("../assets/images/redirect-icon.png")}
-                                        style={{ width: 14, height: 14, tintColor: colors.kujangIdBlue }}
-                                        resizeMode="contain"
-                                    />
-                                    <Text style={styles.redirectText}>Proses di {item.sourceApp}</Text>
+                                <View style={styles.cardTopRow}>
+                                    <View style={[styles.badge, { backgroundColor: `${item.badgeColor}22` }]}>
+                                        <Text style={[styles.badgeText, { color: item.badgeColor }]}>{item.sourceApp}</Text>
+                                    </View>
+                                    <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
                                 </View>
+
+                                <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
+                                <Text style={styles.itemNote}>{item.note}</Text>
+
+                                <View style={styles.requesterRow}>
+                                    <Image
+                                        source={require("../assets/images/person-icon.png")}
+                                        style={styles.avatar}
+                                        resizeMode="cover"
+                                    />
+                                    <Text style={styles.requesterText}>
+                                        {item.requester.name} - Dept. {item.requester.dept}
+                                    </Text>
+                                </View>
+
+                                {/* Approval Actions */}
+                                {item.actionType === "approve_reject" ? (
+                                    <View style={styles.actionRow}>
+                                        <TouchableOpacity
+                                            style={styles.rejectButton}
+                                            onPress={() => openModal(item.id, "reject")}
+                                        >
+                                            <View style={{ flexDirection: "row", alignItems: "center", gap: 6}}>
+                                                <Image
+                                                    source={require("../assets/images/x-icon.png")}
+                                                    style={{ width: 14, height: 14, tintColor: colors.danger }}
+                                                    resizeMode="contain"
+                                                />
+                                                <Text style={styles.rejectText}>Tolak</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={styles.approveButton}
+                                            onPress={() => openModal(item.id, "approve")}
+                                        >
+                                            <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                                <Image
+                                                    source={require("../assets/images/check-icon.png")}
+                                                    style={{ width: 14, height: 14, tintColor: colors.white }}
+                                                    resizeMode="contain"
+                                                />
+                                                <Text style={styles.approveText}>Setujui</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    <TouchableOpacity
+                                        style={styles.redirectButton}
+                                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                                    >
+                                        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                                            <Image
+                                                source={require("../assets/images/redirect-icon.png")}
+                                                style={{ width: 14, height: 14, tintColor: colors.kujangIdBlue }}
+                                                resizeMode="contain"
+                                            />
+                                            <Text style={styles.redirectText}>Proses di {item.sourceApp}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )}
                             </TouchableOpacity>
-                        )}
-                    </TouchableOpacity>
-                )}
+                        </Animated.View>
+                    );
+                }}
             />
 
             {/* Confirmation Modal */}
