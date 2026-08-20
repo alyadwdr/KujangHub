@@ -1,20 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Animated, Easing, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Animated, Easing, Image } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const { width, height } = Dimensions.get("window");
-
 export default function SplashScreen({ navigation }) {
-    // fase 1: bell muncul dari atas
     const dropY = useRef(new Animated.Value(-150)).current;
     const appearOpacity = useRef(new Animated.Value(1)).current;
-
-    //fase 2
-    const moveX = useRef(new Animated.Value(0)).current;
-    const moveY = useRef(new Animated.Value(0)).current;
-    const scale = useRef(new Animated.Value(1)).current;
-    const titleOpacity = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
         Animated.sequence([
@@ -31,40 +22,15 @@ export default function SplashScreen({ navigation }) {
                     useNativeDriver: true,
                 }),
             ]),
-            Animated.delay(400),
+            Animated.delay(100),
             ]).start(async () => {
                 const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+
                 if (isLoggedIn === "true") {
-                    const targetX = width / 2 - 40;
-                    const targetY = -(height / 2) + 60;
-
-                    navigation.replace("MainTabs");
-
-                    Animated.parallel([
-                        Animated.timing(moveX, {
-                            toValue: targetX,
-                            duration: 500,
-                            easing: Easing.inOut(Easing.ease),
-                            useNativeDriver: true,
-                        }),
-                        Animated.timing(moveY, {
-                            toValue: targetY,
-                            duration: 500,
-                            easing: Easing.inOut(Easing.ease),
-                            useNativeDriver: true,
-                        }),
-                        Animated.timing(scale, {
-                            toValue: 0.3,
-                            duration: 500,
-                            easing: Easing.inOut(Easing.ease),
-                            useNativeDriver: true,
-                        }),
-                        Animated.timing(titleOpacity, {
-                            toValue: 0,
-                            duration: 300,
-                            useNativeDriver: true,
-                        }),
-                    ]).start();
+                    navigation.replace("MainTabs", {
+                        screen: "Home",
+                        params: { playBellIntro: true },
+                    });
                 } else {
                     navigation.replace("Login");
                 }
@@ -73,24 +39,14 @@ export default function SplashScreen({ navigation }) {
 
         return (
             <View style={styles.container}>
-                <Animated.View
-                    style={{
-                        transform: [
-                            { translateY: dropY }, 
-                            { translateX: moveX },
-                            { translateY: moveY },
-                            { scale },
-                        ],
-                        opacity: appearOpacity,
-                    }}
-                >
+                <Animated.View style={{ transform: [{ translateY: dropY }], opacity: appearOpacity }}>
                     <Image
                         source={require("../assets/images/bell-icon.png")}
-                        style={styles.bellIcon}
+                        style={styles.bell}
                         resizeMode="contain"
                     />
                 </Animated.View>
-                <Animated.Text style={[typography.h1, styles.title, { opacity: titleOpacity }]}>Kujang Hub</Animated.Text>
+                <Text style={[typography.h1, styles.title]}>Kujang Hub</Text>
             </View>
         );
     }
@@ -103,7 +59,7 @@ export default function SplashScreen({ navigation }) {
             justifyContent: "center",
             alignItems: "center",
         },
-        bellIcon: {
+        bell: {
             width: 90,
             height: 90,
         },

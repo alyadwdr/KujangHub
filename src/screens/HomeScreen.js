@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Animated, Easing } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Animated, Easing, Dimensions } from 'react-native';
 import { colors, spacing, typography } from '../theme';
 import { useRequests } from '../context/RequestsContext';
 import dummyApps from '../data/dummyApps';
 import dummyUser from '../data/dummyUser';
 import { formatTimeHome } from '../utils/formatDate';
 
-export default function HomeScreen({ navigation }) {
+const { width, height } = Dimensions.get("window");
+
+export default function HomeScreen({ navigation, route }) {
     const { pendingRequests } = useRequests();
     
     const appCountsMap = {};
@@ -42,6 +44,40 @@ export default function HomeScreen({ navigation }) {
         }
     };
 
+    const [showBellIntro, setShowBellIntro] = useState(route.params?.playBellIntro === true);
+
+    const introX =useRef(new Animated.Value(-(width / 2 - 40))).current;
+    const introY = useRef(new Animated.Value(height / 2 - 60)).current;
+    const introScale = useRef(new Animated.Value(3.2)).current;
+
+    useEffect(() => {
+        if (!showBellIntro) return;
+
+        Animated.parallel([
+            Animated.timing(introX, {
+                toValue: 0,
+                duration: 500,
+                easing: Easing.inOut(Easing.ease),
+                useNativeDriver: true,
+            }),
+            Animated.timing(introY, {
+                toValue: 0,
+                duration: 500,
+                easing: Easing.inOut(Easing.ease),
+                useNativeDriver: true,
+            }),
+            Animated.timing(introScale, {
+                toValue: 1,
+                duration: 500,
+                easing: Easing.inOut(Easing.ease),
+                useNativeDriver: true,
+            }),
+        ]).start(() => {
+            setShowBellIntro(false);
+            navigation.setParams({ playBellIntro: undefined });
+        });
+    }, []);
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ padding: spacing.lg }}>
             {/* Header */}
@@ -50,9 +86,26 @@ export default function HomeScreen({ navigation }) {
                 <Image
                     source={require("../assets/images/bell-icon.png")}
                     style={styles.bellIcon}
-                    resizeMode='contain'
+                    resizeMode="contain"
                 />
+                {showBellIntro && (
+                    <Animated.Image
+                        source={require("../assets/images/bell-icon.png")}
+                        style={[
+                            styles.bellIntroOverlay,
+                            {
+                                transform: [
+                                    {translateX: introX },
+                                    { translateY: introY },
+                                    { scale: introScale },
+                                ],
+                            },
+                        ]}
+                        resizeMode="contain"
+                    />
+                )}
             </View>
+
             {/* Greeting */}
             <Text style={styles.greeting}>
                 Halo, <Text style={{ fontFamily: "Inter-Bold" }}>{dummyUser.name}</Text>
@@ -161,10 +214,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        zIndex: 99,
+        elevation: 99,
     },
     bellIcon: {
         width: 28,
         height: 28,
+    },
+    bellIntroOverlay: {
+        position: "absolute",
+        top: 5,
+        right: 0,
+        width: 28,
+        height: 28,
+        zIndex: 999,
+        elevation: 999,
     },
     greeting: {
         color: colors.textSecondary, 
