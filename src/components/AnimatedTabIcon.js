@@ -9,7 +9,7 @@ export default function AnimatedTabIcon({ source, color, size, focused }) {
             scale.setValue(1);
             Animated.sequence([
                 Animated.timing(scale, {
-                    toValue: 1.25,
+                    toValue: 1.1,
                     duration: 100,
                     useNativeDriver: true,
                 }),
