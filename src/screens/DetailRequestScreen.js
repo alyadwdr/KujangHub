@@ -96,7 +96,7 @@ export default function DetailRequestScreen({ route, navigation }) {
             
             {/* Footer Actions */}
             <View style={styles.footer}>
-                {request.status === "approved" || request.status === "rejected" ? (
+                {request.status === "approved" || request.status === "rejected" || request.status === "redirected" ? (
                     <TouchableOpacity style={styles.backToListButton} onPress={() => navigation.goBack()}>
                         <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Kembali</Text>
                     </TouchableOpacity>
@@ -124,7 +124,19 @@ export default function DetailRequestScreen({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                 ) : (
-                    <TouchableOpacity style={styles.redirectButton} onPress={() => Linking.openURL(request.webviewUrl)}>
+                    <TouchableOpacity
+                        style={styles.redirectButton}
+                        onPress={() => {
+                            Linking.openURL(request.webviewUrl);
+                            updateRequestStatus(request.id, "redirected");
+                            navigation.goBack();
+
+                            Toast.show({
+                                type: "info",
+                                text1: `Diproses di ${request.sourceApp}`,
+                            });
+                        }}
+                    >
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
                             <Image
                                 source={require("../assets/images/redirect-icon.png")}

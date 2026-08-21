@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Dimensions, Easing, LayoutAnimation, Platform, UIManager } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Dimensions, Easing, LayoutAnimation, Platform, UIManager, Linking } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
@@ -32,13 +32,9 @@ export default function InboxScreen({ navigation }) {
     const openModal = (id, type) => setModalRequest({ id, type });
     const closeModal = () => setModalRequest(null);
 
-    const handleConfirm = (note) => {
-        const request = modalRequest;
-        if (!request) return;
-
-        const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
-        const anim = getItemAnim(request.id);
-
+    const animateAndUpdate = (id, status, note) => {
+        const anim = getItemAnim(id);
+        
         Animated.timing(anim.translateX, {
             toValue: SCREEN_WIDTH,
             duration: 300,
@@ -53,15 +49,32 @@ export default function InboxScreen({ navigation }) {
             useNativeDriver: true,
         }).start(() => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            updateRequestStatus(request.id, newStatus, note);
-            delete itemAnims[request.id];
-
-            Toast.show({
-                type: newStatus === "approved" ? "success" : "error",
-                text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
-            });
+            updateRequestStatus(id, status, note);
+            delete itemAnims[id];
         });
+    };
+
+    const handleConfirm = (note) => {
+        if (!modalRequest) return;
+
+        const newStatus = modalRequest.type === "approve" ? "approved" : "rejected";
+        animateAndUpdate(modalRequest.id, newStatus, note);
         setModalRequest(null);
+
+        Toast.show({
+            type: newStatus === "approved" ? "success" : "error",
+            text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
+        });
+    };
+
+    const handleRedirect = (item) => {
+        Linking.openURL(item.webviewUrl);
+        animateAndUpdate(item.id, "redirected");
+
+        Toast.show({
+            type: "info",
+            text1: `Diproses di ${item.sourceApp}`,
+        });
     };
 
     return (
@@ -174,7 +187,7 @@ export default function InboxScreen({ navigation }) {
                                 ) : (
                                     <TouchableOpacity
                                         style={styles.redirectButton}
-                                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                                        onPress={() => handleRedirect(item)}
                                     >
                                         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
                                             <Image

@@ -8,6 +8,7 @@ const TABS = [
     { key: "all", label: "Semua" },
     { key: "approved", label: "Disetujui" },
     { key: "rejected", label: "Ditolak" },
+    { key: "redirected", label: "Diproses" },
     { key: "expired", label: "Terlewat" },
 ]
 
@@ -20,6 +21,7 @@ export default function HistoryScreen({ navigation }) {
         all: historyRequests.length,
         approved: historyRequests.filter((item) => item.status === "approved").length,
         rejected: historyRequests.filter((item) => item.status === "rejected").length,
+        redirected: historyRequests.filter((item) => item.status === "redirected").length,
         expired: 0,
     };
 
@@ -78,52 +80,61 @@ export default function HistoryScreen({ navigation }) {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.card}
-                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
-                    >
-                        <View style={styles.cardTopRow}>
-                            <View style={styles.badge}>
-                                <Text style={styles.badgeText}>{item.sourceApp}</Text>
+                renderItem={({ item }) => {
+                    const statusConfig = {
+                        approved: { text: "✓ Telah disetujui", color: colors.primary },
+                        rejected: { text: "✕ Telah ditolak", color: colors.danger },
+                        redirected: { text: `↗ Telah diproses di ${item.sourceApp}`, color: colors.kujangIdBlue },
+                    };
+                    const status = statusConfig[item.status] || { text: "", color: colors.textSecondary };
+
+                    return (
+                        <TouchableOpacity
+                            style={styles.card}
+                            onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                        >
+                            <View style={styles.cardTopRow}>
+                                <View style={styles.badge}>
+                                    <Text style={styles.badgeText}>{item.sourceApp}</Text>
+                                </View>
+                                <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
                             </View>
-                            <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
-                        </View>
 
-                        <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
-                        <Text style={styles.itemNote}>{item.note}</Text>
+                            <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
+                            <Text style={styles.itemNote}>{item.note}</Text>
 
-                        <View style={styles.requesterRow}>
-                            <Image
-                                source={require("../assets/images/person-icon.png")}
-                                style={styles.avatar}
-                                resizeMode="cover"
-                            />
-                            <Text style={styles.requesterText}>
-                                {item.requester.name} - Dept. {item.requester.dept}
-                            </Text>
-                        </View>
-
-                        <View style={styles.statusRow}>
-                            <Text
-                                style={[
-                                    styles.statusText,
-                                    { color: item.status === "approved" ? colors.primary : colors.danger },
-                                ]}
-                            >
-                                {item.status === "approved" ? "✓ Telah disetujui" : "✕ Telah ditolak"}
-                            </Text>
-                            {item.confirmedAt && (
-                                <>
-                                <View style={styles.statusDot} />
-                                <Text style={styles.confirmedTime}>
-                                    {new Date(item.confirmedAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit"})} WIB
+                            <View style={styles.requesterRow}>
+                                <Image
+                                    source={require("../assets/images/person-icon.png")}
+                                    style={styles.avatar}
+                                    resizeMode="cover"
+                                />
+                                <Text style={styles.requesterText}>
+                                    {item.requester.name} - Dept. {item.requester.dept}
                                 </Text>
-                                </>
-                            )}
-                        </View>
-                    </TouchableOpacity>
-                )}
+                            </View>
+
+                            <View style={styles.statusRow}>
+                                <Text
+                                    style={[
+                                        styles.statusText,
+                                        { color: item.status === "approved" ? colors.primary : colors.danger },
+                                    ]}
+                                >
+                                    {item.status === "approved" ? "✓ Telah disetujui" : "✕ Telah ditolak"}
+                                </Text>
+                                {item.confirmedAt && (
+                                    <>
+                                    <View style={styles.statusDot} />
+                                    <Text style={styles.confirmedTime}>
+                                        {new Date(item.confirmedAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit"})} WIB
+                                    </Text>
+                                    </>
+                                )}
+                            </View>
+                        </TouchableOpacity>
+                    );
+                }}
             />
         </View>
     );

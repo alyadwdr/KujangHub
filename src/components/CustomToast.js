@@ -13,6 +13,7 @@ function ToastPill({ text, color }) {
 export const toastConfig = {
     success: (props) => <ToastPill text={props.text1} color={colors.primaryDark} />,
     error: (props) => <ToastPill text={props.text1} color={colors.danger} />,
+    info: (props) => <ToastPill text={props.text1} color={colors.kujangIdBlue} />,
 };
 
 const styles = StyleSheet.create({
