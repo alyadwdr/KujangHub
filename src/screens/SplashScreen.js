@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function SplashScreen({ navigation }) {
     const dropY = useRef(new Animated.Value(-150)).current;
     const appearOpacity = useRef(new Animated.Value(1)).current;
+    const titleOpacity = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
         Animated.sequence([
@@ -23,6 +24,11 @@ export default function SplashScreen({ navigation }) {
                 }),
             ]),
             Animated.delay(100),
+            Animated.timing(titleOpacity, {
+                toValue: 0,
+                duration: 250,
+                useNativeDriver: true,
+            }),
             ]).start(async () => {
                 const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
 
@@ -32,7 +38,7 @@ export default function SplashScreen({ navigation }) {
                         params: { playBellIntro: true },
                     });
                 } else {
-                    navigation.replace("Login");
+                    navigation.replace("Login", { playBellIntro: true });
                 }
             });
         }, []);
@@ -46,7 +52,7 @@ export default function SplashScreen({ navigation }) {
                         resizeMode="contain"
                     />
                 </Animated.View>
-                <Text style={[typography.h1, styles.title]}>Kujang Hub</Text>
+                <Animated.Text style={[typography.h1, styles.title, { opacity: titleOpacity }]}>Kujang Hub</Animated.Text>
             </View>
         );
     }

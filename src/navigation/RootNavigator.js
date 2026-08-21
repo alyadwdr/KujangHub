@@ -15,7 +15,7 @@ export default function RootNavigator() {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Splash" component={SplashScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} options={{ animation: "none" }}/>
                 <Stack.Screen name="KujangIdLogin" component={KujangIdLoginScreen} />
                 <Stack.Screen name="MainTabs" component={MainTabs} options={{ animation: "none"}} />
                 <Stack.Screen name="DetailRequest" component={DetailRequestScreen} />
