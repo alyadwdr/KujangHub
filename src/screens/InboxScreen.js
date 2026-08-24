@@ -6,6 +6,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import { formatTimeInbox } from "../utils/formatDate";
 import Toast from "react-native-toast-message";
 import FilterModal from "../components/FilterModal";
+import DateRangeModal from "../components/DateRangeModal";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
@@ -17,6 +18,7 @@ export default function InboxScreen({ navigation }) {
 
     const [appFilter, setAppFilter] = useState([]);
     const [deptFilter, setDeptFilter] =useState([]);
+    const [dateFilter, setDateFilter] = useState(null); 
     const [activeFilterModal, setActiveFilterModal] = useState(null);
 
     const appOptions = [...new Set(pendingRequests.map((item) => item.sourceApp))];
@@ -36,7 +38,12 @@ export default function InboxScreen({ navigation }) {
     const filteredRequests = pendingRequests
         .filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
         .filter((item) => appFilter.length === 0 || appFilter.includes(item.sourceApp))
-        .filter((item) => deptFilter.length === 0 || deptFilter.includes(item.requester.dept));
+        .filter((item) => deptFilter.length === 0 || deptFilter.includes(item.requester.dept))
+        .filter((item) => {
+            if (!dateFilter) return true;
+            const itemDate = item.date.slice(0, 10);
+            return itemDate >= dateFilter.start && itemDate <= dateFilter.end;
+        });
 
     const openModal = (id, type) => setModalRequest({ id, type });
     const closeModal = () => setModalRequest(null);
@@ -131,8 +138,13 @@ export default function InboxScreen({ navigation }) {
                         + Departemen{deptFilter.length > 0 ? `(${deptFilter.length})` : ""}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.filterChip} onPress={() => setActiveFilterModal("Waktu")}>
-                    <Text style={styles.filterText}>+ Waktu</Text>
+                <TouchableOpacity
+                    style={[styles.filterChip, dateFilter && styles.filterChipActive]}
+                    onPress={() => setActiveFilterModal("Waktu")}
+                >
+                    <Text style={[styles.filterText, dateFilter && styles.filterTextActive]}>
+                        + Waktu
+                    </Text>
                 </TouchableOpacity>
             </View>
 
@@ -251,6 +263,12 @@ export default function InboxScreen({ navigation }) {
                 selected={deptFilter}
                 onApply={setDeptFilter}
                 onClose={() =>setActiveFilterModal(null)}
+            />
+            <DateRangeModal
+                visible={activeFilterModal === "Waktu"}
+                selectedRange={dateFilter}
+                onApply={setDateFilter}
+                onClose={() => setActiveFilterModal(null)}
             />
         </View>
     );
