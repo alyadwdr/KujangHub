@@ -5,6 +5,7 @@ import { useRequests } from "../context/RequestsContext";
 import ConfirmModal from "../components/ConfirmModal";
 import { formatTimeInbox } from "../utils/formatDate";
 import Toast from "react-native-toast-message";
+import FilterModal from "../components/FilterModal";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
@@ -13,6 +14,13 @@ export default function InboxScreen({ navigation }) {
     const { pendingRequests, updateRequestStatus } = useRequests();
     const [search, setSearch] = useState("");
     const [modalRequest, setModalRequest] = useState(null);
+
+    const [appFilter, setAppFilter] = useState([]);
+    const [deptFilter, setDeptFilter] =useState([]);
+    const [activeFilterModal, setActiveFilterModal] = useState(null);
+
+    const appOptions = [...new Set(pendingRequests.map((item) => item.sourceApp))];
+    const deptOptions = [...new Set (pendingRequests.map((item) => item.requester.dept))];
 
     const itemAnims = useRef({}).current;
     const getItemAnim = (id) => {
@@ -25,9 +33,10 @@ export default function InboxScreen({ navigation }) {
         return itemAnims[id];
     };
 
-    const filteredRequests = pendingRequests.filter((item) =>
-        item.title.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredRequests = pendingRequests
+        .filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
+        .filter((item) => appFilter.length === 0 || appFilter.includes(item.sourceApp))
+        .filter((item) => deptFilter.length === 0 || deptFilter.includes(item.requester.dept));
 
     const openModal = (id, type) => setModalRequest({ id, type });
     const closeModal = () => setModalRequest(null);
@@ -106,11 +115,25 @@ export default function InboxScreen({ navigation }) {
             </View>
 
             <View style={styles.filterRow}>
-                {FILTERS.map((label) => (
-                    <TouchableOpacity key ={label} style={styles.filterChip}>
-                        <Text style={styles.filterText}>+ {label}</Text>
-                    </TouchableOpacity>
-                ))}
+                <TouchableOpacity
+                    style={[styles.filterChip, appFilter.length > 0 && styles.filterChipActive]}
+                    onPress={() => setActiveFilterModal("Aplikasi")}
+                >
+                    <Text style={[styles.filterText, appFilter.length > 0 && styles.filterTextActive]}>
+                        + Aplikasi{appFilter.length > 0 ? ` (${appFilter.length})` : ""}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.filterChip,deptFilter.length > 0 && styles.filterChipActive]}
+                    onPress={() => setActiveFilterModal("Departemen")}
+                >
+                    <Text style={[styles.filterText, deptFilter.length > 0 && styles.filterTextActive]}>
+                        + Departemen{deptFilter.length > 0 ? `(${deptFilter.length})` : ""}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.filterChip} onPress={() => setActiveFilterModal("Waktu")}>
+                    <Text style={styles.filterText}>+ Waktu</Text>
+                </TouchableOpacity>
             </View>
 
             {/* Request List */}
@@ -212,6 +235,23 @@ export default function InboxScreen({ navigation }) {
                 onCancel={closeModal}
                 onConfirm={handleConfirm}
             />
+
+            <FilterModal
+                visible={activeFilterModal === "Aplikasi"}
+                title="Filter Aplikasi"
+                options={appOptions}
+                selected={appFilter}
+                onApply={setAppFilter}
+                onClose={() => setActiveFilterModal(null)}
+            />
+            <FilterModal
+                visible={activeFilterModal === "Departemen"}
+                title="Filter Departemen"
+                options={deptOptions}
+                selected={deptFilter}
+                onApply={setDeptFilter}
+                onClose={() =>setActiveFilterModal(null)}
+            />
         </View>
     );
 }
@@ -272,6 +312,13 @@ const styles = StyleSheet.create({
     filterText: {
         fontSize: 12,
         color: colors.primary,
+    },
+    filterChipActive: {
+        backgroundColor: colors.primary,
+        borderStyle: "solid",
+    },
+    filterTextActive: {
+        color: colors.white,
     },
     list: {
         paddingHorizontal: spacing.lg,
