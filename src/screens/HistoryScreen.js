@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, ScrollView } from "react-native";
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import { formatTimeInbox } from "../utils/formatDate";
@@ -57,7 +57,11 @@ export default function HistoryScreen({ navigation }) {
             </View>
 
             {/* Filter Tabs */}
-            <View style={styles.tabRow}>
+            <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.tabRow}
+            >
                 {TABS.map((tab) => {
                     const isActive = activeTab === tab.key;
                     return (
@@ -72,12 +76,13 @@ export default function HistoryScreen({ navigation }) {
                         </TouchableOpacity>
                     );
                 })}
-            </View>
+            </ScrollView>
             
             {/* History List */}
             <FlatList
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}
+                style={styles.historyList}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
                 renderItem={({ item }) => {
@@ -115,13 +120,8 @@ export default function HistoryScreen({ navigation }) {
                             </View>
 
                             <View style={styles.statusRow}>
-                                <Text
-                                    style={[
-                                        styles.statusText,
-                                        { color: item.status === "approved" ? colors.primary : colors.danger },
-                                    ]}
-                                >
-                                    {item.status === "approved" ? "✓ Telah disetujui" : "✕ Telah ditolak"}
+                                <Text style={[styles.statusText, { color: status.color }]}>
+                                    {status.text}
                                 </Text>
                                 {item.confirmedAt && (
                                     <>
@@ -180,10 +180,11 @@ const styles = StyleSheet.create({
     },
     tabRow: {
         flexDirection: "row",
+        alignItems: "center",
         gap: spacing.xs,
         paddingHorizontal: spacing.lg,
         marginTop: spacing.md,
-        flexWrap: "wrap",
+        marginBottom: spacing.md,
     },
     tabChip: {
         borderWidth: 1,
@@ -207,6 +208,9 @@ const styles = StyleSheet.create({
     list: {
         padding: spacing.lg,
         gap: spacing.md,
+    },
+    historyList: {
+        flex: 1,
     },
     empty: {
         textAlign: "center",
