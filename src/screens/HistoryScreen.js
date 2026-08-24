@@ -60,6 +60,7 @@ export default function HistoryScreen({ navigation }) {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
+                style={styles.tabScroll}
                 contentContainerStyle={styles.tabRow}
             >
                 {TABS.map((tab) => {
@@ -82,7 +83,6 @@ export default function HistoryScreen({ navigation }) {
             <FlatList
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}
-                style={styles.historyList}
                 contentContainerStyle={styles.list}
                 ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
                 renderItem={({ item }) => {
@@ -178,13 +178,18 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: spacing.md,
     },
+    tabScroll: {
+        flexGrow: 0,
+        flexShrink: 0,
+        height: 60,
+    },
     tabRow: {
         flexDirection: "row",
         alignItems: "center",
         gap: spacing.xs,
         paddingHorizontal: spacing.lg,
         marginTop: spacing.md,
-        marginBottom: spacing.md,
+        marginBottom: spacing.sm,
     },
     tabChip: {
         borderWidth: 1,
@@ -206,11 +211,9 @@ const styles = StyleSheet.create({
         color: colors.white,
     },
     list: {
-        padding: spacing.lg,
+        paddingHorizontal: spacing.lg,
+        paddingBottom: spacing.lg,
         gap: spacing.md,
-    },
-    historyList: {
-        flex: 1,
     },
     empty: {
         textAlign: "center",
