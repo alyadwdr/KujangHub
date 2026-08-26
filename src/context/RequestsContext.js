@@ -1,10 +1,20 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import initialRequests from "../data/dummyRequests";
 
 const RequestsContext = createContext();
 
 export function RequestsProvider({ children }) {
     const [requests, setRequests] = useState(initialRequests);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setRequests(initialRequests);
+            setIsLoading(false);
+        }, 2000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const updateRequestStatus = (id, status, decisionNote) => {
         setRequests((prev) =>

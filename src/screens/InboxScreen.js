@@ -7,12 +7,13 @@ import { formatTimeInbox } from "../utils/formatDate";
 import Toast from "react-native-toast-message";
 import FilterModal from "../components/FilterModal";
 import DateRangeModal from "../components/DateRangeModal";
+import LoadingState from "../components/LoadingState";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 
 export default function InboxScreen({ navigation }) {
-    const { pendingRequests, updateRequestStatus } = useRequests();
+    const { pendingRequests, updateRequestStatus, isLoading } = useRequests();
     const [search, setSearch] = useState("");
     const [modalRequest, setModalRequest] = useState(null);
 
@@ -149,6 +150,9 @@ export default function InboxScreen({ navigation }) {
             </View>
 
             {/* Request List */}
+            {isLoading ? (
+                <LoadingState message="Loading..." />
+            ) : (
             <FlatList
                 data={filteredRequests}
                 keyExtractor={(item) => item.id}
@@ -239,6 +243,7 @@ export default function InboxScreen({ navigation }) {
                     );
                 }}
             />
+            )}
 
             {/* Confirmation Modal */}
             <ConfirmModal

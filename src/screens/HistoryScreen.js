@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, S
 import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import { formatTimeInbox } from "../utils/formatDate";
+import LoadingState from "../components/LoadingState";
 
 const TABS = [
     { key: "all", label: "Semua" },
@@ -13,7 +14,7 @@ const TABS = [
 ]
 
 export default function HistoryScreen({ navigation }) {
-    const { historyRequests } = useRequests();
+    const { historyRequests, isLoading } = useRequests();
     const [activeTab, setActiveTab] = useState("all");
     const [search, setSearch] = useState("");
 
@@ -56,86 +57,92 @@ export default function HistoryScreen({ navigation }) {
                 />
             </View>
 
-            {/* Filter Tabs */}
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.tabScroll}
-                contentContainerStyle={styles.tabRow}
-            >
-                {TABS.map((tab) => {
-                    const isActive = activeTab === tab.key;
-                    return (
-                        <TouchableOpacity
-                            key={tab.key}
-                            style={[styles.tabChip, isActive && styles.tabChipActive]}
-                            onPress={() => setActiveTab(tab.key)}
-                        >
-                            <Text style ={[styles.tabText, isActive && styles.tabTextActive]}>
-                                {tab.label} {counts[tab.key]}
-                            </Text>
-                        </TouchableOpacity>
-                    );
-                })}
-            </ScrollView>
-            
-            {/* History List */}
-            <FlatList
-                data={filteredRequests}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.list}
-                ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
-                renderItem={({ item }) => {
-                    const statusConfig = {
-                        approved: { text: "✓ Telah disetujui", color: colors.primary },
-                        rejected: { text: "✕ Telah ditolak", color: colors.danger },
-                        redirected: { text: `↗ Telah diproses di ${item.sourceApp}`, color: colors.kujangIdBlue },
-                    };
-                    const status = statusConfig[item.status] || { text: "", color: colors.textSecondary };
+            {isLoading ? (
+                <LoadingState message="Loading..." />
+            ) : (
+                <>
+                {/* Filter Tabs */}
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.tabScroll}
+                    contentContainerStyle={styles.tabRow}
+                >
+                    {TABS.map((tab) => {
+                        const isActive = activeTab === tab.key;
+                        return (
+                            <TouchableOpacity
+                                key={tab.key}
+                                style={[styles.tabChip, isActive && styles.tabChipActive]}
+                                onPress={() => setActiveTab(tab.key)}
+                            >
+                                <Text style ={[styles.tabText, isActive && styles.tabTextActive]}>
+                                    {tab.label} {counts[tab.key]}
+                                </Text>
+                            </TouchableOpacity>
+                        );
+                    })}
+                </ScrollView>
+                
+                {/* History List */}
+                <FlatList
+                    data={filteredRequests}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={styles.list}
+                    ListEmptyComponent={<Text style={styles.empty}>Tidak ada history</Text>}
+                    renderItem={({ item }) => {
+                        const statusConfig = {
+                            approved: { text: "✓ Telah disetujui", color: colors.primary },
+                            rejected: { text: "✕ Telah ditolak", color: colors.danger },
+                            redirected: { text: `↗ Telah diproses di ${item.sourceApp}`, color: colors.kujangIdBlue },
+                        };
+                        const status = statusConfig[item.status] || { text: "", color: colors.textSecondary };
 
-                    return (
-                        <TouchableOpacity
-                            style={styles.card}
-                            onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
-                        >
-                            <View style={styles.cardTopRow}>
-                                <View style={styles.badge}>
-                                    <Text style={styles.badgeText}>{item.sourceApp}</Text>
+                        return (
+                            <TouchableOpacity
+                                style={styles.card}
+                                onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                            >
+                                <View style={styles.cardTopRow}>
+                                    <View style={styles.badge}>
+                                        <Text style={styles.badgeText}>{item.sourceApp}</Text>
+                                    </View>
+                                    <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
                                 </View>
-                                <Text style={styles.date}>{formatTimeInbox(item.date)}</Text>
-                            </View>
 
-                            <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
-                            <Text style={styles.itemNote}>{item.note}</Text>
+                                <Text style={[typography.body, styles.itemTitle]}>{item.title}</Text>
+                                <Text style={styles.itemNote}>{item.note}</Text>
 
-                            <View style={styles.requesterRow}>
-                                <Image
-                                    source={require("../assets/images/person-icon.png")}
-                                    style={styles.avatar}
-                                    resizeMode="cover"
-                                />
-                                <Text style={styles.requesterText}>
-                                    {item.requester.name} - Dept. {item.requester.dept}
-                                </Text>
-                            </View>
-
-                            <View style={styles.statusRow}>
-                                <Text style={[styles.statusText, { color: status.color }]}>
-                                    {status.text}
-                                </Text>
-                                {item.confirmedAt && (
-                                    <>
-                                    <View style={styles.statusDot} />
-                                    <Text style={styles.confirmedTime}>
-                                        {new Date(item.confirmedAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit"})} WIB
+                                <View style={styles.requesterRow}>
+                                    <Image
+                                        source={require("../assets/images/person-icon.png")}
+                                        style={styles.avatar}
+                                        resizeMode="cover"
+                                    />
+                                    <Text style={styles.requesterText}>
+                                        {item.requester.name} - Dept. {item.requester.dept}
                                     </Text>
-                                    </>
-                                )}
-                            </View>
-                        </TouchableOpacity>
-                    );
-                }}
-            />
+                                </View>
+
+                                <View style={styles.statusRow}>
+                                    <Text style={[styles.statusText, { color: status.color }]}>
+                                        {status.text}
+                                    </Text>
+                                    {item.confirmedAt && (
+                                        <>
+                                        <View style={styles.statusDot} />
+                                        <Text style={styles.confirmedTime}>
+                                            {new Date(item.confirmedAt).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit"})} WIB
+                                        </Text>
+                                        </>
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    }}
+                />
+                </>
+            )}
         </View>
     );
 }

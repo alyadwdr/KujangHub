@@ -5,11 +5,12 @@ import { useRequests } from '../context/RequestsContext';
 import dummyApps from '../data/dummyApps';
 import dummyUser from '../data/dummyUser';
 import { formatTimeHome } from '../utils/formatDate';
+import LoadingState from '../components/LoadingState';
 
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ navigation, route }) {
-    const { pendingRequests } = useRequests();
+    const { pendingRequests, isLoading } = useRequests();
     
     const appCountsMap = {};
     pendingRequests.forEach((item) => {
@@ -112,95 +113,101 @@ export default function HomeScreen({ navigation, route }) {
             </Text>
             <View style={styles.divider} />
 
-            {/* Aplikasi Terintegrasi */}
-            <View style={styles.card}>
-                <View style={styles.cardHeaderRow}>
-                    <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("PendingPerApp")}>
-                        <Text style={styles.lihatSemua}>Lihat Semua &gt;</Text>
-                    </TouchableOpacity>
-                </View>
-                
-                <Animated.View
-                    onLayout={handleSegmentBarLayout}
-                    style={[
-                        styles.segmentBar,
-                        segmentBarWidth > 0 && {
-                            transform: [
-                                { translateX: -segmentBarWidth / 2 },
-                                { scaleX: segmentBarScale },
-                                { translateX: segmentBarWidth / 2},
-                            ],
-                        },
-                    ]}
-                >
-                    {topApps.map((app) => (
-                        <View
-                            key={app.name}
-                            style={[styles.segment, { flex: app.count, backgroundColor: app.color}]}
-                        />
-                    ))}
-                    {restCount > 0 && (
-                        <View style={[styles.segment, { flex: restCount, backgroundColor: colors.textSecondary }]} />
-                    )}
-                </Animated.View>
-
-                <View style={styles.dotsRow}>
-                    {topApps.map((app) => (
-                        <View key={app.name} style={styles.dotItem}>
-                            <View style={[styles.dot, { backgroundColor: app.color }]} />
-                            <Text style={typography.small}>{app.name}</Text>
-                            <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {app.count}</Text>
-                        </View>
-                    ))}
-                    {restCount > 0 && (
-                        <View style={styles.dotItem}>
-                            <View style={[styles.dot, { backgroundColor: colors.textSecondary }]} />
-                            <Text style={typography.small}>DLL</Text>
-                            <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {restCount}</Text>
-                        </View>
-                    )}
-            </View>
-        </View>
-
-        {/* Request Terbaru */}
-        <View style={styles.card}>
-            <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
-                {pendingRequests.length} request terbaru
-            </Text>
-            {pendingRequests.length === 0 ? (
-                <Text style={styles.emptyText}>Tidak ada request</Text>
+            {isLoading ? (
+                <LoadingState message="Loading..." />
             ) : (
-                pendingRequests.map((item, index) => (
-                <View
-                    key={item.id}
-                    style={[styles.requestRow, index > 0 && styles.requestRowDivider]}
-                >
-                    <View style={styles.avatar}>
-                        <Image
-                            source={dummyApps.find((app) => app.matchKey === item.sourceApp)?.logo}
-                            style={styles.avatarLogo}
-                            resizeMode="contain"
-                        />
+                <>
+                {/* Aplikasi Terintegrasi */}
+                <View style={styles.card}>
+                    <View style={styles.cardHeaderRow}>
+                        <Text style={typography.h2}>Aplikasi Terintegrasi</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("PendingPerApp")}>
+                            <Text style={styles.lihatSemua}>Lihat Semua &gt;</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 1, marginLeft: spacing.sm }}>
-                        <Text style={typography.body} numberOfLines={1}>
-                            {item.title}
-                        </Text>
-                        <Text style={[typography.small, { color: colors.textSecondary }]}>
-                            {item.sourceApp} | {formatTimeHome(item.date)}
-                        </Text>
-                    </View>
-                    <TouchableOpacity 
-                        style={styles.prosesButton}
-                        onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                    
+                    <Animated.View
+                        onLayout={handleSegmentBarLayout}
+                        style={[
+                            styles.segmentBar,
+                            segmentBarWidth > 0 && {
+                                transform: [
+                                    { translateX: -segmentBarWidth / 2 },
+                                    { scaleX: segmentBarScale },
+                                    { translateX: segmentBarWidth / 2},
+                                ],
+                            },
+                        ]}
                     >
-                        <Text style={{ color: colors.primary, fontFamily: "Inter-Bold" }}>Proses</Text>
-                    </TouchableOpacity>
+                        {topApps.map((app) => (
+                            <View
+                                key={app.name}
+                                style={[styles.segment, { flex: app.count, backgroundColor: app.color}]}
+                            />
+                        ))}
+                        {restCount > 0 && (
+                            <View style={[styles.segment, { flex: restCount, backgroundColor: colors.textSecondary }]} />
+                        )}
+                    </Animated.View>
+
+                    <View style={styles.dotsRow}>
+                        {topApps.map((app) => (
+                            <View key={app.name} style={styles.dotItem}>
+                                <View style={[styles.dot, { backgroundColor: app.color }]} />
+                                <Text style={typography.small}>{app.name}</Text>
+                                <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {app.count}</Text>
+                            </View>
+                        ))}
+                        {restCount > 0 && (
+                            <View style={styles.dotItem}>
+                                <View style={[styles.dot, { backgroundColor: colors.textSecondary }]} />
+                                <Text style={typography.small}>DLL</Text>
+                                <Text style={[typography.small, { fontFamily: "Inter-Bold" }]}> {restCount}</Text>
+                            </View>
+                        )}
                 </View>
-                ))
+            </View>
+
+            {/* Request Terbaru */}
+            <View style={styles.card}>
+                <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
+                    {pendingRequests.length} request terbaru
+                </Text>
+                {pendingRequests.length === 0 ? (
+                    <Text style={styles.emptyText}>Tidak ada request</Text>
+                ) : (
+                    pendingRequests.map((item, index) => (
+                    <View
+                        key={item.id}
+                        style={[styles.requestRow, index > 0 && styles.requestRowDivider]}
+                    >
+                        <View style={styles.avatar}>
+                            <Image
+                                source={dummyApps.find((app) => app.matchKey === item.sourceApp)?.logo}
+                                style={styles.avatarLogo}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <View style={{ flex: 1, marginLeft: spacing.sm }}>
+                            <Text style={typography.body} numberOfLines={1}>
+                                {item.title}
+                            </Text>
+                            <Text style={[typography.small, { color: colors.textSecondary }]}>
+                                {item.sourceApp} | {formatTimeHome(item.date)}
+                            </Text>
+                        </View>
+                        <TouchableOpacity 
+                            style={styles.prosesButton}
+                            onPress={() => navigation.navigate("DetailRequest", { requestId: item.id })}
+                        >
+                            <Text style={{ color: colors.primary, fontFamily: "Inter-Bold" }}>Proses</Text>
+                        </TouchableOpacity>
+                    </View>
+                    ))
+                )}
+            </View>
+            </>
             )}
-        </View>
         </ScrollView>
     );
 }

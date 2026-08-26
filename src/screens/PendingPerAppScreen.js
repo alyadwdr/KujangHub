@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react
 import { colors, typography, spacing } from "../theme";
 import { dummyApps } from "../data/dummyApps";
 import { useRequests } from "../context/RequestsContext";
+import LoadingState from "../components/LoadingState";
 
 export default function PendingPerAppScreen({ navigation }) {
-    const { pendingRequests } = useRequests();
+    const { pendingRequests, isLoading } = useRequests();
 
     const appsWithCount = dummyApps.map((app) => {
         const count = pendingRequests.filter((item) => item.sourceApp === app.matchKey).length;
@@ -31,6 +32,9 @@ export default function PendingPerAppScreen({ navigation }) {
             <Text style={styles.subtitle}>Aplikasi yang terhubung ke Kujang Hub</Text>
 
             {/* App List */}
+            {isLoading ? (
+                <LoadingState message="Loading..." />
+            ) : (
             <FlatList
                 data={appsWithCount}
                 keyExtractor={(item) => item.id}
@@ -62,6 +66,7 @@ export default function PendingPerAppScreen({ navigation }) {
                     </View>
                 )}
             />
+            )}
         </View>
     );
 }
