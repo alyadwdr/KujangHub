@@ -19,7 +19,8 @@ export const dummyRequests = [
             "Tanggal Peminjaman": "22 Juli 2026"
         },
         note: "Digunakan untuk tutorial menggunakan APAR di Safety Induction",
-        attachments: [{ name: "Lampiran.pdf" }],
+        attachments: [
+            { name: "Lampiran.pdf", type: "pdf", url: "https://www.africau.edu/images/default/sample.pdf" }],
     },
     {
         id: "2",
@@ -41,7 +42,6 @@ export const dummyRequests = [
             "Status": "Submit to Manager",
         },
         note: "-",
-        attachments: [{ name: "Lampiran.pdf" }],
     },
     {
         id: "3",
@@ -61,7 +61,8 @@ export const dummyRequests = [
             "Keperluan": "Untuk rapat"
         },
         note: "-",
-        attachments: [{ name: "Lampiran.pdf" }],
+        attachments: [
+            { name: "Lampiran.pdf", type: "image", url: "https://via.placeholder.com/600x400.png" }],
     },
     {
     id: "4",
@@ -74,7 +75,10 @@ export const dummyRequests = [
     webviewUrl: "https://pupuk-kujang.co.id/",
     detail: { "No Dokumen": "DOC/2026/0089" },
     note: "-",
-    attachments: [],
+    attachments: [
+        { name: "Lampiran.pdf", type: "pdf", url: "https://www.africau.edu/images/default/sample.pdf"},
+        { name: "Foto Bukti.png", type: "image", url: "https://via.placeholder.com/600x400.png"},
+    ],
 },
 ];
 

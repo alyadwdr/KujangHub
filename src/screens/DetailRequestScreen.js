@@ -86,9 +86,13 @@ export default function DetailRequestScreen({ route, navigation }) {
                     <View style={styles.attachmentCard}>
                         <Text style={styles.attachmentTitle}>Lampiran</Text>
                         {request.attachments.map((att) => (
-                            <View key={att.name} style={styles.attachmentRow}>
+                            <TouchableOpacity
+                                key={att.name}
+                                style={styles.attachmentRow}
+                                onPress={() => Linking.openURL(att.url)}
+                            >
                                 <Text style={styles.attachmentText}>📎 {att.name}</Text>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 )}
@@ -275,6 +279,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F3F4F6",
         borderRadius: 8,
         padding: spacing.md,
+        marginBottom: spacing.md,
     },
     attachmentText: {
         fontFamily: "Inter-Bold",
