@@ -176,7 +176,7 @@ export default function HomeScreen({ navigation, route }) {
                 {pendingRequests.length === 0 ? (
                     <Text style={styles.emptyText}>Tidak ada request</Text>
                 ) : (
-                    pendingRequests.map((item, index) => (
+                    pendingRequests.slice(0, 5).map((item, index) => (
                     <View
                         key={item.id}
                         style={[styles.requestRow, index > 0 && styles.requestRowDivider]}

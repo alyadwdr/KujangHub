@@ -4,7 +4,7 @@ import initialRequests from "../data/dummyRequests";
 const RequestsContext = createContext();
 
 export function RequestsProvider({ children }) {
-    const [requests, setRequests] = useState(initialRequests);
+    const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export function RequestsProvider({ children }) {
     const historyRequests = requests.filter((item) => item.status && item.status !== "pending");
 
     return (
-        <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests, historyRequests }}>
+        <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests, historyRequests, isLoading }}>
             {children}
         </RequestsContext.Provider>
     );
