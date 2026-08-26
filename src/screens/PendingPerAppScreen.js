@@ -4,9 +4,10 @@ import { colors, typography, spacing } from "../theme";
 import { dummyApps } from "../data/dummyApps";
 import { useRequests } from "../context/RequestsContext";
 import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 export default function PendingPerAppScreen({ navigation }) {
-    const { pendingRequests, isLoading } = useRequests();
+    const { pendingRequests, isLoading, error, retry } = useRequests();
 
     const appsWithCount = dummyApps.map((app) => {
         const count = pendingRequests.filter((item) => item.sourceApp === app.matchKey).length;
@@ -32,7 +33,9 @@ export default function PendingPerAppScreen({ navigation }) {
             <Text style={styles.subtitle}>Aplikasi yang terhubung ke Kujang Hub</Text>
 
             {/* App List */}
-            {isLoading ? (
+            {error ? (
+                <ErrorState message={error} onRetry={retry} />
+            ) : isLoading ? (
                 <LoadingState message="Loading..." />
             ) : (
             <FlatList

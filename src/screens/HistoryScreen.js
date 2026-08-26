@@ -4,6 +4,7 @@ import { colors, spacing, typography } from "../theme";
 import { useRequests } from "../context/RequestsContext";
 import { formatTimeInbox } from "../utils/formatDate";
 import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState"; // Tambahan impor ErrorState
 
 const TABS = [
     { key: "all", label: "Semua" },
@@ -14,7 +15,8 @@ const TABS = [
 ]
 
 export default function HistoryScreen({ navigation }) {
-    const { historyRequests, isLoading } = useRequests();
+    // Tambahan error dan retry di useRequests
+    const { historyRequests, isLoading, error, retry } = useRequests();
     const [activeTab, setActiveTab] = useState("all");
     const [search, setSearch] = useState("");
 
@@ -57,7 +59,9 @@ export default function HistoryScreen({ navigation }) {
                 />
             </View>
 
-            {isLoading ? (
+            {error ? (
+                <ErrorState message={error} onRetry={retry} />
+            ) : isLoading ? (
                 <LoadingState message="Loading..." />
             ) : (
                 <>

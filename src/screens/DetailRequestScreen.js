@@ -6,13 +6,22 @@ import ConfirmModal from "../components/ConfirmModal";
 import { WebView } from "react-native-webview";
 import Toast from "react-native-toast-message";
 import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState"; // Tambahan impor ErrorState
 
 export default function DetailRequestScreen({ route, navigation }) {
     const { requestId } = route.params;
-    const { requests, updateRequestStatus, isLoading } = useRequests();
+    const { requests, updateRequestStatus, isLoading, error, retry } = useRequests();
     const request = requests.find((item) => item.id === requestId);
 
     const [modalType, setModalType] = useState(null);
+
+    if (error) {
+        return (
+            <View style={styles.container}>
+                <ErrorState message={error} onRetry={retry} />
+            </View>
+        );
+    }
 
     if (isLoading) {
         return (

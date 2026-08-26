@@ -8,12 +8,13 @@ import Toast from "react-native-toast-message";
 import FilterModal from "../components/FilterModal";
 import DateRangeModal from "../components/DateRangeModal";
 import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const FILTERS = ["Aplikasi", "Departemen", "Waktu"];
 
 export default function InboxScreen({ navigation }) {
-    const { pendingRequests, updateRequestStatus, isLoading } = useRequests();
+    const { pendingRequests, updateRequestStatus, isLoading, error, retry } = useRequests();
     const [search, setSearch] = useState("");
     const [modalRequest, setModalRequest] = useState(null);
 
@@ -150,7 +151,9 @@ export default function InboxScreen({ navigation }) {
             </View>
 
             {/* Request List */}
-            {isLoading ? (
+            {error ? (
+                <ErrorState message={error} onRetry={retry} />
+            ) : isLoading ? (
                 <LoadingState message="Loading..." />
             ) : (
             <FlatList

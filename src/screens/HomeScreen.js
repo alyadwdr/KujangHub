@@ -6,11 +6,12 @@ import dummyApps from '../data/dummyApps';
 import dummyUser from '../data/dummyUser';
 import { formatTimeHome } from '../utils/formatDate';
 import LoadingState from '../components/LoadingState';
+import ErrorState from "../components/ErrorState";
 
 const { width, height } = Dimensions.get("window");
 
 export default function HomeScreen({ navigation, route }) {
-    const { pendingRequests, isLoading } = useRequests();
+    const { pendingRequests, isLoading, error, retry } = useRequests();
     
     const appCountsMap = {};
     pendingRequests.forEach((item) => {
@@ -113,10 +114,13 @@ export default function HomeScreen({ navigation, route }) {
             </Text>
             <View style={styles.divider} />
 
-            {isLoading ? (
+            {error ? (
+                <ErrorState message={error} onRetry={retry} />
+            ) : isLoading ? (
                 <LoadingState message="Loading..." />
             ) : (
                 <>
+                
                 {/* Aplikasi Terintegrasi */}
                 <View style={styles.card}>
                     <View style={styles.cardHeaderRow}>

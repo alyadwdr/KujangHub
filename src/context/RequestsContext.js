@@ -2,18 +2,29 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import initialRequests from "../data/dummyRequests";
 
 const RequestsContext = createContext();
+const SIMULATE_ERROR = false;
 
 export function RequestsProvider({ children }) {
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
+    const fetchRequests = () => {
+        setIsLoading(true);
+        setError(null);
+        setTimeout(() => {
+            if (SIMULATE_ERROR) {
+                setError("Gagal memuat data. Periksa koneksi internet kamu.");
+                setIsLoading(false);
+                return;
+            }
             setRequests(initialRequests);
             setIsLoading(false);
-        }, 2000);
+        }, 800);
+    };
 
-        return () => clearTimeout(timer);
+    useEffect(() => {
+        fetchRequests();
     }, []);
 
     const updateRequestStatus = (id, status, decisionNote) => {
@@ -28,7 +39,7 @@ export function RequestsProvider({ children }) {
     const historyRequests = requests.filter((item) => item.status && item.status !== "pending");
 
     return (
-        <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests, historyRequests, isLoading }}>
+        <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests, historyRequests, isLoading, error, retry: fetchRequests }}>
             {children}
         </RequestsContext.Provider>
     );
