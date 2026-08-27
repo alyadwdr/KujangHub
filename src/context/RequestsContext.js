@@ -33,7 +33,7 @@ export function RequestsProvider({ children }) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 if (SIMULATE_UPDATE_ERROR) {
-                    reject(new Error("Gagal meperbarui status. Coba lagi."));
+                    reject(new Error("Gagal memperbarui status. Coba lagi."));
                     return;
                 }
                 setRequests((prev) =>
