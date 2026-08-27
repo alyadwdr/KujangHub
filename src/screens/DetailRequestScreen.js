@@ -148,15 +148,17 @@ export default function DetailRequestScreen({ route, navigation }) {
                 ) : (
                     <TouchableOpacity
                         style={styles.redirectButton}
-                        onPress={() => {
+                        onPress={async () => {
                             Linking.openURL(request.webviewUrl);
-                            updateRequestStatus(request.id, "redirected");
                             navigation.goBack();
 
-                            Toast.show({
-                                type: "info",
-                                text1: `Diproses di ${request.sourceApp}`,
-                            });
+                            try {
+                                await updateRequestStatus(request.id, "redirected");
+                                Toast.show({ type: "info", text1: `Diproses di ${request.sourceApp}` });
+                            } catch (err) {
+                                Toast.show({ type: "error", text1: err.message || "Gagal memperbarui status" });
+                                retry();
+                            }
                         }}
                     >
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
@@ -178,16 +180,21 @@ export default function DetailRequestScreen({ route, navigation }) {
                 visible={modalType !== null}
                 type={modalType}
                 onCancel={() => setModalType(null)}
-                onConfirm={(note) => {
+                onConfirm={async (note) => {
                     const newStatus = modalType === "approve" ? "approved" : "rejected";
-                    updateRequestStatus(request.id, newStatus, note); 
                     setModalType(null);
                     navigation.goBack();
 
-                    Toast.show({
-                        type: newStatus === "approved" ? "success" : "error",
-                        text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
-                    });
+                    try {
+                        await updateRequestStatus(request.id, newStatus, note);
+                        Toast.show({
+                            type: newStatus === "approved" ? "success" : "error",
+                            text1: newStatus === "approved" ? "Request disetujui" : "Request ditolak",
+                        });
+                    } catch (err) {
+                        Toast.show({ type: "error", text1: err.message || "Gagal memperbarui status" });
+                        retry();
+                    }
                 }}
             />
         </View>

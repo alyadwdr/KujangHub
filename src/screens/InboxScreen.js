@@ -65,10 +65,16 @@ export default function InboxScreen({ navigation }) {
             duration: 250,
             easing: Easing.out(Easing.cubic),
             useNativeDriver: true,
-        }).start(() => {
+        }).start(async () => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            updateRequestStatus(id, status, note);
             delete itemAnims[id];
+            
+            try {
+                await updateRequestStatus(id, status, note);
+            } catch (err) {
+                Toast.show({ type: "error", text1: err.message || "Gagal memperbarui status" });
+                retry();
+            }
         });
     };
 

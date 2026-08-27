@@ -27,12 +27,25 @@ export function RequestsProvider({ children }) {
         fetchRequests();
     }, []);
 
+    const SIMULATE_UPDATE_ERROR = false;
+
     const updateRequestStatus = (id, status, decisionNote) => {
-        setRequests((prev) =>
-            prev.map((item) => 
-                item.id === id ? { ...item, status, confirmedAt: new Date().toISOString(), decisionNote: decisionNote || "" } : item
-            )
-        );
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (SIMULATE_UPDATE_ERROR) {
+                    reject(new Error("Gagal meperbarui status. Coba lagi."));
+                    return;
+                }
+                setRequests((prev) =>
+                    prev.map((item) =>
+                        item.id === id
+                            ? { ...item, status, confirmedAt: new Date().toISOString(), decisionNote: decisionNote || ""}
+                            : item
+                    )
+                );
+                resolve();
+            }, 500);
+        });
     };
 
     const pendingRequests = requests.filter((item) => !item.status || item.status === "pending");
