@@ -48,8 +48,13 @@ export function RequestsProvider({ children }) {
         });
     };
 
-    const pendingRequests = requests.filter((item) => !item.status || item.status === "pending");
-    const historyRequests = requests.filter((item) => item.status && item.status !== "pending");
+    const pendingRequests = requests
+        .filter((item) => !item.status || item.status === "pending")
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const historyRequests = requests
+        .filter((item) => item.status && item.status !== "pending")
+        .sort((a, b) => new Date(b.confirmedAt) - new Date(a.confirmedAt));
 
     return (
         <RequestsContext.Provider value={{ requests, updateRequestStatus, pendingRequests, historyRequests, isLoading, error, retry: fetchRequests }}>

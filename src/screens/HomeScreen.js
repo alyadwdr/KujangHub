@@ -175,7 +175,7 @@ export default function HomeScreen({ navigation, route }) {
             {/* Request Terbaru */}
             <View style={styles.card}>
                 <Text style={[typography.h2, { marginBottom: spacing.sm }]}>
-                    {pendingRequests.length} request terbaru
+                    {pendingRequests.length > 5 ? 5 : pendingRequests.length} request terbaru
                 </Text>
                 {pendingRequests.length === 0 ? (
                     <Text style={styles.emptyText}>Tidak ada request</Text>
