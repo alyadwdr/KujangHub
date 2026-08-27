@@ -97,7 +97,7 @@ export default function HomeScreen({ navigation, route }) {
                             styles.bellIntroOverlay,
                             {
                                 transform: [
-                                    {translateX: introX },
+                                    { translateX: introX },
                                     { translateY: introY },
                                     { scale: introScale },
                                 ],
@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
     greeting: {
         color: colors.textSecondary, 
         marginTop: spacing.sm,
+        fontSize: 16,
     },
     divider: {
         height: 1,
