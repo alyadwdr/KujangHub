@@ -13,6 +13,24 @@ const SSO_PROVIDERS = [
 export default function KujangIdLoginScreen({ navigation }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleSignIn = () => {
+        if (!username.trim() || !password.trim()) {
+            setError("Username dan password wajib diisi");
+            return;
+        }
+
+        setError(null);
+        setIsLoading(true);
+
+        setTimeout(async () => {
+            await AsyncStorage.setItem("isLoggedIn", "true");
+            setIsLoading(false);
+            navigation.replace("MainTabs");
+        }, 600);
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -64,11 +82,16 @@ export default function KujangIdLoginScreen({ navigation }) {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.signInButton} onPress={async () => {
-                    await AsyncStorage.setItem("isLoggedIn", "true");
-                    navigation.replace("MainTabs")
-                }}>
-                    <Text style={styles.signInButtonText}>Sign In</Text>
+                {error && <Text style={styles.errorText}>{error}</Text>}
+
+                <TouchableOpacity 
+                    style={[styles.signInButton, isLoading && styles.signInButtonDisabled]}
+                    onPress={handleSignIn}
+                    disabled={isLoading}
+                >
+                    <Text style={styles.signInButtonText}>
+                        {isLoading ? "Signing in..." : "Sign In"}
+                    </Text>
                 </TouchableOpacity>
 
                 {/* Terms & Privacy */}
@@ -176,6 +199,15 @@ const styles = StyleSheet.create({
     signInButtonText: {
         color: colors.white,
         fontFamily: "Inter-Bold",
+    },
+    errorText: {
+        color: colors.danger,
+        fontSize: 14,
+        marginBottom: spacing.sm,
+        textAlign: "center",
+    },
+    signInButtonDisabled: {
+        opacity: 0.6,
     },
     terms: {
         textAlign: "center",

@@ -16,6 +16,8 @@ const HEADER_MARGIN_TOP = -(HEADER_BELL_HEIGHT - HEADER_PEEK_HEIGHT);
 export default function LoginScreen({ navigation, route }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const [showBellIntro, setShowBellIntro] = useState(route?.params?.playBellIntro === true);
     const introY = useRef(new Animated.Value(0)).current;
@@ -55,8 +57,19 @@ export default function LoginScreen({ navigation, route }) {
     }, []);
 
     const handleLogin = async () => {
-        await AsyncStorage.setItem("isLoggedIn", "true");
-        navigation.replace("MainTabs");
+        if (!username.trim() || !password.trim()) {
+            setError("Username dan password wajib diisi");
+            return;
+        }
+
+        setError(null);
+        setIsLoading(true);
+
+        setTimeout(async () => {
+            await AsyncStorage.setItem("isLoggedIn", "true");
+            setIsLoading(false);
+            navigation.replace("MainTabs");
+        }, 600);
     };
 
     return (
@@ -118,8 +131,16 @@ export default function LoginScreen({ navigation, route }) {
                     secureTextEntry
                 />
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Log In</Text>
+                {error && <Text style={styles.errorText}>{error}</Text>}
+
+                <TouchableOpacity 
+                    style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
+                    onPress={handleLogin}
+                    disabled={isLoading}
+                >
+                    <Text style={styles.loginButtonText}>
+                        {isLoading ? "Logging in..." : "Log In"}
+                    </Text>
                 </TouchableOpacity>
 
                 {/* Divider */}
@@ -224,6 +245,15 @@ const styles = StyleSheet.create({
     loginButtonText: {
         color: colors.white,
         fontFamily: "Inter-Bold",
+    },
+    errorText: {
+        color: colors.danger,
+        fontSize: 14,
+        marginBottom: spacing.sm,
+        textAlign: "center",
+    },
+    loginButtonDisabled: {
+        opacity: 0.6,
     },
     orRow: {
         flexDirection: "row",
