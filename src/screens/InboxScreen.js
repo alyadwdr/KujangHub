@@ -143,7 +143,7 @@ export default function InboxScreen({ navigation }) {
                     onPress={() => setActiveFilterModal("Departemen")}
                 >
                     <Text style={[styles.filterText, deptFilter.length > 0 && styles.filterTextActive]}>
-                        + Departemen{deptFilter.length > 0 ? `(${deptFilter.length})` : ""}
+                        + Departemen{deptFilter.length > 0 ? ` (${deptFilter.length})` : ""}
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
