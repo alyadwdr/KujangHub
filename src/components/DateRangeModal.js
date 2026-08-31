@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Modal, View, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { colors, spacing, typography } from "../theme";
 
@@ -57,48 +57,54 @@ export default function DateRangeModal({ visible, selectedRange, onApply, onClos
 
     return (
         <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-            <View style={styles.backdrop}>
-                <View style={styles.sheet}>
-                    <Text style={typography.h2}>Filter Tanggal</Text>
+            <TouchableWithoutFeedback onPress={onClose}>
+                <View style={styles.backdrop}>
+                    <TouchableWithoutFeedback onPress={() => {}}>
+                        <View style={styles.sheet}>
+                            
+                            <Text style={typography.h2}>Filter Tanggal</Text>
 
-                    <Calendar
-                        markingType="period"
-                        markedDates={buildMarkedDates()}
-                        onDayPress={handleDayPress}
-                        maxDate={toDateString(new Date())}
-                        theme={{
-                            todayTextColor: colors.primary,
-                            arrowColor: colors.primary,
-                            textDayFontFamily: "Inter-Regular",
-                            textMonthFontFamily: "Inter-Bold",
-                        }}
-                        style={styles.calendar}
-                    />
+                            <Calendar
+                                markingType="period"
+                                markedDates={buildMarkedDates()}
+                                onDayPress={handleDayPress}
+                                maxDate={toDateString(new Date())}
+                                theme={{
+                                    todayTextColor: colors.primary,
+                                    arrowColor: colors.primary,
+                                    textDayFontFamily: "Inter-Regular",
+                                    textMonthFontFamily: "Inter-Bold",
+                                }}
+                                style={styles.calendar}
+                            />
 
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={styles.resetButton}
-                            onPress={() => {
-                                setStartDate(null);
-                                setEndDate(null);
-                            }}
-                        >
-                            <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Reset</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.applyButton}
-                            onPress={() => {
-                                onApply({ start: startDate, end: endDate || startDate });
-                                onClose();
-                            }}
-                        >
-                            <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Apply</Text>
-                        </TouchableOpacity>
-                    </View>
+                            <View style={styles.buttonRow}>
+                                <TouchableOpacity
+                                    style={styles.resetButton}
+                                    onPress={() => {
+                                        setStartDate(null);
+                                        setEndDate(null);
+                                    }}
+                                >
+                                    <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Reset</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.applyButton}
+                                    onPress={() => {
+                                        onApply({ start: startDate, end: endDate || startDate });
+                                        onClose();
+                                    }}
+                                >
+                                    <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Apply</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
-    )
+    );
 }
 
 const styles = StyleSheet.create({

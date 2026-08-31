@@ -20,7 +20,7 @@ export const dummyRequests = [
         },
         note: "Digunakan untuk tutorial menggunakan APAR di Safety Induction",
         attachments: [
-            { name: "Lampiran.pdf", type: "pdf", url: "https://www.africau.edu/images/default/sample.pdf" }],
+            { name: "Formulir Peminjaman APAR", type: "pdf", url: "https://raw.githubusercontent.com/alyadwdr/KujangHub/main/sample-attachments/Contoh lampiran kujang hub.docx" }],
     },
     {
         id: "2",
@@ -62,7 +62,7 @@ export const dummyRequests = [
         },
         note: "-",
         attachments: [
-            { name: "Lampiran.pdf", type: "image", url: "https://via.placeholder.com/600x400.png" }],
+            { name: "Foto Menu Rapat", type: "image", url: "https://raw.githubusercontent.com/alyadwdr/KujangHub/main/sample-attachments/contoh.png" }],
     },
     {
         id: "4",
@@ -76,8 +76,8 @@ export const dummyRequests = [
         detail: { "No Dokumen": "DOC/2026/0089" },
         note: "-",
         attachments: [
-            { name: "Lampiran.pdf", type: "pdf", url: "https://www.africau.edu/images/default/sample.pdf"},
-            { name: "Foto Bukti.png", type: "image", url: "https://via.placeholder.com/600x400.png"},
+            { name: "Contoh", type: "pdf", url: "https://raw.githubusercontent.com/alyadwdr/KujangHub/main/sample-attachments/KH.xlsx"},
+            { name: "Foto Bukti", type: "image", url: "https://raw.githubusercontent.com/alyadwdr/KujangHub/main/sample-attachments/contoh.png"},
         ],
     },
     {

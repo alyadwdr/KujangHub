@@ -109,7 +109,7 @@ export default function DetailRequestScreen({ route, navigation }) {
                                 style={styles.attachmentRow}
                                 onPress={() => Linking.openURL(att.url)}
                             >
-                                <Text style={styles.attachmentText}>📎 {att.name}</Text>
+                                <Text style={styles.attachmentText}>📎  {att.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>

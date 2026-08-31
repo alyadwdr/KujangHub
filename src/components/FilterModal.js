@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Modal, View, Text, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
+import { Modal, View, Text, TouchableOpacity, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { colors, spacing, typography } from "../theme";
 
 export default function FilterModal({ visible, title, options, selected, onApply, onClose }) {
-    const [tempSelected, setTempSelected] = useState(selected) ;
+    const [tempSelected, setTempSelected] = useState(selected);
 
     useEffect(() => {
         setTempSelected(selected);
@@ -17,47 +17,53 @@ export default function FilterModal({ visible, title, options, selected, onApply
 
     return (
         <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-            <View style={styles.backdrop}>
-                <View style={styles.sheet}>
-                    <Text style={typography.h2}>{title}</Text>
+            <TouchableWithoutFeedback onPress={onClose}>
+                <View style={styles.backdrop}>
+                    <TouchableWithoutFeedback onPress={() => {}}>
+                        <View style={styles.sheet}>
+                            
+                            <Text style={typography.h2}>{title}</Text>
 
-                    <ScrollView style={styles.optionList}>
-                        {options.map((option) => {
-                            const isChecked = tempSelected.includes(option);
-                            return (
+                            <ScrollView style={styles.optionList}>
+                                {options.map((option) => {
+                                    const isChecked = tempSelected.includes(option);
+                                    return (
+                                        <TouchableOpacity
+                                            key={option}
+                                            style={styles.optionRow}
+                                            onPress={() => toggleOption(option)}
+                                        >
+                                            <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
+                                                {isChecked && <Text style={styles.checkmark}>✓</Text>}
+                                            </View>
+                                            <Text style={typography.body}>{option}</Text>
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </ScrollView>
+
+                            <View style={styles.buttonRow}>
                                 <TouchableOpacity
-                                    key={option}
-                                    style={styles.optionRow}
-                                    onPress={() => toggleOption(option)}
+                                    style={styles.resetButton}
+                                    onPress={() => setTempSelected([])}
                                 >
-                                    <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
-                                        {isChecked && <Text style={styles.checkmark}>✓</Text>}
-                                    </View>
-                                    <Text style={typography.body}>{option}</Text>
+                                    <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Reset</Text>
                                 </TouchableOpacity>
-                            );
-                        })}
-                    </ScrollView>
+                                <TouchableOpacity
+                                    style={styles.applyButton}
+                                    onPress={() => {
+                                        onApply(tempSelected);
+                                        onClose();
+                                    }}
+                                >
+                                    <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Apply</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={styles.resetButton}
-                            onPress={() => setTempSelected([])}
-                        >
-                            <Text style={{ color: colors.textPrimary, fontFamily: "Inter-Bold" }}>Reset</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.applyButton}
-                            onPress={() => {
-                                onApply(tempSelected);
-                                onClose();
-                            }}
-                        >
-                            <Text style={{ color: colors.white, fontFamily: "Inter-Bold" }}>Apply</Text>
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 }
@@ -122,4 +128,4 @@ const styles = StyleSheet.create({
         paddingVertical: spacing.md,
         alignItems: "center",
     },
-})
+});
