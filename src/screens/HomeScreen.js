@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     lihatSemua: {
         color: colors.primary,
         fontFamily: "Inter-Bold",
-        fontSize: 12,
+        fontSize: 14,
     },
     segmentBar: {
         flexDirection: "row",

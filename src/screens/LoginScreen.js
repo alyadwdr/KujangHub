@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: colors.background,
         borderWidth: 1,
-        borderColor: "#E5E7EB",
+        borderColor: colors.textSecondary,
         borderRadius: 8,
         padding: spacing.md,
         marginBottom: spacing.md,

@@ -392,9 +392,9 @@ const styles = StyleSheet.create({
         fontFamily: "Inter-Bold",
     },
     itemNote: {
-        fontSize: 12,
+        fontSize: 13,
         color: colors.textSecondary,
-        marginTop: 2,
+        marginTop: 5,
     },
     requesterRow: {
         flexDirection: "row",
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
     },
     requesterText: {
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: "Inter-Bold",
         marginLeft: spacing.xs,
     },
